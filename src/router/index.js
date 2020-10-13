@@ -21,7 +21,7 @@ import Layout from '@/layout'
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
     breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    activeMenu: '/training /list'  if set path, the sidebar will highlight the path you set
   }
  */
 
@@ -56,17 +56,17 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/training',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/training/course',
+    name: 'training',
+    meta: { title: '培训管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'course',
+        name: 'course',
+        component: () => import('@/views/course/index'),
+        meta: { title: '课程列表', icon: 'table' }
       },
       {
         path: 'tree',
