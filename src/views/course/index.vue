@@ -1,40 +1,72 @@
 <template>
-  <div class="app-container">
-    <el-table
-      v-loading="loading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="序号" type="index" width="50"/>
-      <el-table-column label="课程名称" prop="title" />
-      <el-table-column label="开展时间" prop="title" />
-      <el-table-column label="教授老师" prop="title" />
-      <el-table-column label="原价格" prop="title" />
-      <el-table-column label="早鸟价格" prop="title" />
-      <el-table-column label="团购价格" prop="title" />
-      <el-table-column label="优惠价格" prop="title" />
-      <el-table-column label="报名人数" prop="title" />
-      <el-table-column label="已收费用" prop="title" />
-      <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
-          <el-button type="text" @click="setting(scope.row.id)">配置活动</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="list-content">
+    <list-layout>
+      <template slot="search">
+        <div class="fx-cs">
+          <el-input size="small" style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
+          <el-button size="small">搜索</el-button>
+        </div>
+      </template>
+
+      <template slot="action">
+        <el-button size="small" type="primary">新建课程</el-button>
+        <el-button size="small" type="primary">导出课程信息</el-button>
+      </template>
+
+      <template>
+        <el-table
+          v-loading="loading"
+          :data="list"
+          height="100%"
+          border
+          fit
+          highlight-current-row
+        >
+          <el-table-column align="center" fixed label="序号" type="index" width="50"/>
+          <el-table-column label="课程名称" fixed prop="status" />
+          <el-table-column label="开展时间" prop="status" />
+          <el-table-column label="教授老师" prop="status" />
+          <el-table-column label="原价格" prop="status" />
+          <el-table-column label="早鸟价格" prop="status" />
+          <el-table-column label="团购价格" prop="status" />
+          <el-table-column label="优惠价格" prop="status" />
+          <el-table-column label="报名人数" prop="status" />
+          <el-table-column label="已收费用" prop="status" />
+          <el-table-column label="操作"  fixed="right" width="200">
+            <template slot-scope="scope">
+              <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
+              <el-button type="text" @click="setting(scope.row.id)">配置活动</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </template>
+
+      <template slot="pagination">
+        <pagination
+          :total="total"
+          :page-size="query.limit"
+          :current-page="query.page"
+          @sizeChange="sizeChange"
+          @currentChange="currentChange"
+        />
+      </template>
+    </list-layout>
+    <component :is="currentComponent" :mes="componentMes" @close="closeComponent" />
   </div>
 </template>
 
 <script>
+import ListMixin from '@/mixin/list'
 import { getList } from '@/api/table'
+import SettingDialog from '@/views/course/setting'
 
 export default {
+  mixins: [ListMixin],
+  components: {
+    SettingDialog
+  },
   data() {
     return {
-      list: null,
-      loading: true
     }
   },
   created() {
@@ -50,11 +82,11 @@ export default {
     },
 
     signRecord(id) {
-      
+      this.$router.push('signRecord?id=' + id)
     },
 
     setting(id) {
-
+      this.loadComponent('SettingDialog', {id})
     }
   }
 }

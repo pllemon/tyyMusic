@@ -23,19 +23,20 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="微信名" fixed prop="status" />
-          <el-table-column label="姓名" prop="status" />
-          <el-table-column label="身份证信息" prop="status" />
-          <el-table-column label="联系方式" prop="status" />
-          <el-table-column label="原价格" prop="status" />
-          <el-table-column label="购买类型" prop="status" />
-          <el-table-column label="价格" prop="status" />
-          <el-table-column label="付费时间" prop="status" />
-          <el-table-column label="付款状态" prop="status" />
-          <el-table-column label="操作"  fixed="right" width="200">
+          <el-table-column label="比赛名称" fixed prop="status" />
+          <el-table-column label="开展时间" prop="status" />
+          <el-table-column label="比赛状态" prop="status" />
+          <el-table-column label="比赛费用" prop="status" />
+          <el-table-column label="报名人数" prop="status" />
+          <el-table-column label="已收费用" prop="status" />
+          <el-table-column label="优惠价格" prop="status" />
+          <el-table-column label="报名人数" prop="status" />
+          <el-table-column label="已收费用" prop="status" />
+          <el-table-column label="操作"  fixed="right" width="250">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
-              <el-button type="text" @click="setting(scope.row.id)">配置活动</el-button>
+              <el-button type="text" @click="setting(scope.row.id)">查看成绩</el-button>
+              <el-button type="text" @click="setting(scope.row.id)">配置比赛</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -58,7 +59,7 @@
 <script>
 import ListMixin from '@/mixin/list'
 import { getList } from '@/api/table'
-import SettingDialog from '@/views/course/setting'
+import SettingDialog from '@/views/match/setting'
 
 export default {
   mixins: [ListMixin],
