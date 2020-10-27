@@ -57,7 +57,7 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/table'
+import { getList } from '@/api/training'
 import SettingDialog from '@/views/course/setting'
 
 export default {

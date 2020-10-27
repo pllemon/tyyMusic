@@ -1,5 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
+    <div class="header"></div>
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div class="main-container">
@@ -91,5 +92,14 @@ export default {
 
   .mobile .fixed-header {
     width: 100%;
+  }
+
+  .header{
+    height: 50px;
+    background-color: #477bf6;
+    color: #fff;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
   }
 </style>

@@ -29,7 +29,7 @@
 </template>
 <script>
 import { getToken } from '@/utils/auth'
-import { upload } from '@/api/com'
+import { upload } from '@/api/user'
 export default {
   props: {
     value: '',

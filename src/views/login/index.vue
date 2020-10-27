@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
+    <!-- <img class="ch" src='../../assets/image/bg2.png'/> -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">管理平台</h3>
       </div>
 
       <el-form-item prop="username">
@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="账号"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,45 +41,26 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
+import { getLoginStorage } from '@/utils/auth'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
+      isSaveLoginInfo: '',
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: '',
+        remember: false
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur'}],
+        password: [{ required: true, trigger: 'blur'}]
       },
       loading: false,
       passwordType: 'password',
@@ -93,6 +74,9 @@ export default {
       },
       immediate: true
     }
+  },
+  created() {
+    this.loginForm = getLoginStorage()
   },
   methods: {
     showPwd() {
@@ -131,7 +115,7 @@ export default {
 
 $bg:#283443;
 $light_gray:#fff;
-$cursor: #fff;
+$cursor: #353535;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -152,7 +136,7 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: #353535;
       height: 47px;
       caret-color: $cursor;
 
@@ -165,9 +149,12 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    // background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+    border-bottom: 1px solid #999;
+    border-radius: 0;
+    margin-bottom: 20px;
   }
 }
 </style>
@@ -180,16 +167,27 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: #fff;
   overflow: hidden;
-
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: -webkit-linear-gradient(45deg, #4279de, #1396fa);
+  .ch{
+    max-width: 50%;
+  }
   .login-form {
     position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
+    width: 420px;
+    max-width: 90%;
+    padding: 50px;
+    overflow: auto;
+    background: #fff;
+    border-radius: 10px;
+    margin-left: 8%;
+    flex-shrink: 0;
   }
 
   .tips {
@@ -216,11 +214,13 @@ $light_gray:#eee;
     position: relative;
 
     .title {
-      font-size: 26px;
-      color: $light_gray;
+      font-size: 28px;
+      color: #161515;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
+      margin-bottom: 50px;
+      margin-top: 20px;
     }
   }
 
@@ -232,6 +232,56 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+.logo{
+  position: fixed;
+  top: 0px;
+  right: 10px;
+  width: 80px;
+}
+
+.el-button{
+  margin-top: 50px;
+  border-radius: 30px;
+  font-size: 20px;
+  background: -webkit-linear-gradient(right, #4279de, #1396fa);
+  height: 50px;
+  border: none;
+}
+
+
+@media screen and (max-width: 1000px) {
+  .login-container{
+    flex-direction: column;
+    .ch{
+      max-width: 400px;
+      width: 100%;
+    }
+    .login-form{
+      margin-left: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .login-container{
+    .ch{
+      max-width: 300px;
+    }
+    .login-form{
+      margin-bottom: 20px;
+      padding: 30px;
+    }
+    .el-button{
+      margin-top: 30px;
+    }
+    .title-container {
+      .title{
+        margin-bottom: 30px;
+      }
+    }
   }
 }
 </style>

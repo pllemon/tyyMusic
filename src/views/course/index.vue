@@ -57,8 +57,8 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/table'
 import SettingDialog from '@/views/course/setting'
+import { trainList } from '@/api/training'
 
 export default {
   mixins: [ListMixin],
@@ -67,20 +67,15 @@ export default {
   },
   data() {
     return {
+      api: {
+        getList: trainList
+      }
     }
   },
   created() {
-    this.fetchData()
+    this.getList()
   },
   methods: {
-    fetchData() {
-      this.loading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.loading = false
-      })
-    },
-
     signRecord(id) {
       this.$router.push('signRecord?id=' + id)
     },

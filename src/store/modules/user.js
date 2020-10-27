@@ -1,41 +1,65 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login } from '@/api/user'
+import { getDetails } from '@/api/user'
+import { getToken, setToken, removeToken, setLoginStorage, removeLoginStorage, setAccountId, getAccountId, removeAccountId } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-    name: '',
-    avatar: ''
+let globalSearch = sessionStorage.getItem('globalSearch')
+if (globalSearch) {
+  globalSearch = JSON.parse(globalSearch)
+} else {
+  globalSearch = {
+    year: '',
+    month: '',
+    network_id: '',
+    areaCode: []
   }
 }
 
-const state = getDefaultState()
+const state = {
+  token: getToken(),
+  roles: null,
+  userInfo: null,
+  globalSearch: globalSearch
+}
 
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_USERINFO: (state, info) => {
+    state.userInfo = info
+  },
+  SET_SEARCH: (state, data) => {
+    console.log('-------------全局搜索------------------')
+    console.log(data)
+    console.log('---------------------------------------')
+    sessionStorage.setItem('globalSearch', JSON.stringify(data))
+    state.globalSearch = data
   }
 }
 
 const actions = {
-  // user login
+  // 登录
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, remember } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
+        // 记住密码
+        if (remember) {
+          setLoginStorage(userInfo)
+        } else {
+          removeLoginStorage()
+        }
+
+        // 保存token和账号id
         commit('SET_TOKEN', data.token)
         setToken(data.token)
+        setAccountId(data.admininfo.id)
+
         resolve()
       }).catch(error => {
         reject(error)
@@ -43,20 +67,21 @@ const actions = {
     })
   },
 
-  // get user info
+  // 个人信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getDetails({
+        admin_id: getAccountId()
+      }).then(response => {
         const { data } = response
+        console.log(data)
 
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          reject('登录已过期，请重新登录')
         }
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_ROLES', data.role)
+        commit('SET_USERINFO', data)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -64,28 +89,28 @@ const actions = {
     })
   },
 
-  // user logout
+  // 用户退出
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', null)
+      removeToken()
+      removeAccountId()
+      resetRouter()
+      resolve()
     })
   },
 
-  // remove token
+  // 清除token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', null)
+      removeToken()
+      removeAccountId()
       resolve()
     })
-  }
+  },
 }
 
 export default {
