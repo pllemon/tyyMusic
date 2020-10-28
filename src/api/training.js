@@ -10,7 +10,7 @@ export function trainList(data) {
 
 export function signUpList(data) {
   return request({
-    url: '/admin/rainsignuplist',
+    url: '/admin/trainsignuplist',
     method: 'post',
     data
   })

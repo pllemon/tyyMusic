@@ -8,17 +8,10 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function getDetails(params) {
   return request({
     url: '/admin/adminuserinfo',
     method: 'get',
-    params: { token }
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
+    params
   })
 }

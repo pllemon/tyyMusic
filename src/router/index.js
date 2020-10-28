@@ -58,22 +58,28 @@ export const constantRoutes = [
   {
     path: '/training',
     component: Layout,
-    redirect: '/training/course',
+    redirect: '/training/list',
     name: 'training',
     meta: { title: '培训管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'course',
-        name: 'course',
-        component: () => import('@/views/course/index'),
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/training/list'),
         meta: { title: '课程列表', icon: 'table', keepAlive: true }
       },
       {
         path: 'signRecord',
         name: 'signRecord',
-        component: () => import('@/views/course/signRecord'),
+        component: () => import('@/views/training/signRecord'),
         meta: { title: '报名详情', icon: 'table', inlinePage: true },
         hidden: true
+      },
+      {
+        path: 'training',
+        name: 'training',
+        component: () => import('@/views/training/list'),
+        meta: { title: '规则管理', icon: 'table', keepAlive: true }
       }
     ]
   },

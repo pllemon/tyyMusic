@@ -20,6 +20,8 @@ Vue.prototype.$common = common
 
 import UploadPic from '@/components/Upload/index'
 Vue.component('UploadPic', UploadPic)
+import UploadPic2 from '@/components/Upload/index2'
+Vue.component('UploadPic2', UploadPic2)
 
 Vue.use(ElementUI)
 

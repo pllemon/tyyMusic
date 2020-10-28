@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'https://www.dsfjjwx.com/',
+        target: 'http://www.dsfjjwx.com:8081/',
         changeOrigin: true
       }
     },

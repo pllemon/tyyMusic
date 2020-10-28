@@ -9,7 +9,7 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">新建课程</el-button>
+        <el-button size="small" type="primary" @click="setting()">新建课程</el-button>
         <el-button size="small" type="primary">导出课程信息</el-button>
       </template>
 
@@ -57,7 +57,7 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import SettingDialog from '@/views/course/setting'
+import SettingDialog from '@/views/training/setting'
 import { trainList } from '@/api/training'
 
 export default {

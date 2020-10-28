@@ -5,7 +5,6 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
-import common from './utils/common.js'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -20,33 +19,31 @@ router.beforeEach(async(to, from, next) => {
 
   // 是否登录
   const hasToken = getToken()
+  console.log(hasToken)
   if (hasToken) {
     if (to.path === '/login') {
       // 如果已经登录并且跳往登陆页，重定向到首页
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasRoles = store.getters.roles
-      if (hasRoles) {
-        next()
-      } else {
-        try {
-          // 获取用户信息
-          let { role } = await store.dispatch('user/getInfo')
-
-          // 获取角色菜单，把角色菜单添加至路由
-          const accessRoutes = await store.dispatch('permission/generateRoutes', role)
-          router.addRoutes(accessRoutes)
-          
-          next(to)
-        } catch (error) {
-          // 清除token并重定向到登录页，重新登录
-          await store.dispatch('user/resetToken')
-          Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
-          NProgress.done()
-        }
-      }
+      next()
+      // const userInfo = store.getters.userInfo
+      // if (userInfo) {
+      //   next()
+      // } else {
+      //   try {
+      //     // 获取用户信息
+      //     await store.dispatch('user/getInfo')
+      //     next(to)
+      //   } catch (error) {
+      //     console.log(error)
+      //     // 清除token并重定向到登录页，重新登录
+      //     await store.dispatch('user/logout')
+      //     Message.error(error || 'Has Error')
+      //     next(`/login?redirect=${to.path}`)
+      //     NProgress.done()
+      //   }
+      // }
     }
   } else {
     // 没有token

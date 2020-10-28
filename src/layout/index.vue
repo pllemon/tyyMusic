@@ -58,13 +58,13 @@ export default {
   .app-wrapper {
     @include clearfix;
     position: fixed;
-    top: 50px;
+    top: 0px;
     width: 100%;
     box-sizing: border-box;
     bottom: 0px;
     &.mobile.openSidebar{
       position: fixed;
-      top: 50px;
+      top: 0px;
     }
   }
   .drawer-bg {
