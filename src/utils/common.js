@@ -28,6 +28,7 @@ function deepCopy(obj) {
 
 
 export default {
+  ip: 'http://www.dsfjjwx.com:8081/',
   successNotify,
   deepCopy
 }

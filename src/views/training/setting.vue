@@ -19,7 +19,7 @@
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="原价：" prop="money">
-                        <el-input type="text" v-model="form.money" placeholder="请输入" clearable />
+                        <el-input-number style="width:100%" v-model="form.money" placeholder="请输入" :precision="2" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -28,17 +28,26 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
+                    <el-form-item label="状态：" prop="status">
+                        <el-radio-group v-model="form.status">
+                            <el-radio :label="1">启用</el-radio>
+                            <el-radio :label="2">禁用</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
                     <el-form-item label="描述：" prop="desc">
-                        <el-input type="text" v-model="form.desc" placeholder="请输入" clearable />
+                        <el-input type="textarea" :rows="4" v-model="form.desc" placeholder="请输入" clearable />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="优惠活动：">
                       <el-checkbox-group v-model="activeType">
                         <div class="fx-cs">
-                            <el-checkbox label="age" style="margin-right: 10px">年龄</el-checkbox>
+                            <!-- <el-checkbox label="age" style="margin-right: 10px">年龄</el-checkbox> -->
+                            <div>年龄：</div>
                             <div class="fx-cs">
-                                <el-select v-model="form.age.calculation" style="width:100px" placeholder="请选择">
+                                <el-select v-model="form.rule.age.calculation" style="width:100px" placeholder="请选择">
                                 <el-option
                                     v-for="item in ageOptions"
                                     :key="item.value"
@@ -46,46 +55,46 @@
                                     :value="item.value">
                                 </el-option>
                                 </el-select>
-                                <el-input type="text" style="width:100px;margin-left:10px" v-model="form.age.value" placeholder="请输入" clearable />
+                                <el-input-number style="width:100px;margin-left:10px" v-model="form.rule.age.value" placeholder="请输入" :precision="0" />
                                 <span style="margin: 0 10px">岁，优惠￥</span>
-                                <el-input type="text" style="width:100px" v-model="form.age.discount_money" placeholder="请输入" clearable />
+                                <el-input-number style="width:100px" v-model="form.rule.age.discount_money" placeholder="请输入" :precision="2" />
                             </div>
                         </div>
                         <div class="fx-cs" style="margin: 10px 0">
-                            <el-checkbox label="number" style="margin-right: 10px">团购</el-checkbox>
+                            <!-- <el-checkbox label="number" style="margin-right: 10px">团购</el-checkbox> -->
+                            <div>团购：</div>
                             <div class="fx-cs">
-                                <el-input type="text" style="width:140px" v-model="form.number.value" placeholder="请输入" clearable />
+                                <el-input-number style="width:140px;" v-model="form.rule.number.value" placeholder="请输入" :precision="0" />
                                 <span style="margin: 0 10px">人，优惠￥</span>
-                                <el-input type="text" style="width:100px" v-model="form.number.discount_money" placeholder="请输入" clearable />
+                                <el-input-number style="width:100px" v-model="form.rule.number.discount_money" placeholder="请输入" :precision="2" />
                             </div>
                         </div>
                         <div class="fx-cs">
-                            <el-checkbox label="time" style="margin-right: 10px">早鸟价</el-checkbox>
+                            <!-- <el-checkbox label="time" style="margin-right: 10px">早鸟价</el-checkbox> -->
+                            <div>早鸟价：</div>
                             <div class="fx-cs">
-                                <el-date-picker style="width:140px" v-model="form.time.value" type="date" placeholder="选择日期" />
+                                <el-date-picker value-format="yyyy-MM-dd" style="width:140px" v-model="form.rule.time.value" type="date" placeholder="选择日期" />
                                 <span style="margin: 0 10px">前，优惠￥</span>
-                                <el-input type="text" style="width:100px" v-model="form.time.discount_money" placeholder="请输入" clearable />
+                                <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
                             </div>
                         </div>
                       </el-checkbox-group>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="封面图：" prop="cover">
-                        <UploadPic2
+                    <el-form-item label="封面图：" prop="banner_url">
+                        <gd-upload
                             v-if="!loading"
-                            :file="file" 
-                            :autoUpload="false" 
-                            width="320" 
-                            height="180"  
-                            action="#"
-                            @change="changeFile"
+                            action='admin/uploadimg'
+                            type="train"
+                            :file="file"  
+                            @success="uploadSuccess"
                         />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer" v-show="!loading">
             <el-button size="small" @click="close">取 消</el-button>
             <el-button type="primary" :loading="loading" size="small" @click="updateSingle">确 定</el-button>
         </span>
@@ -93,46 +102,59 @@
 </template>
 <script>
 import UpdateMixin from '@/mixin/update'
-import { upDateTrain } from '@/api/training'
+import { upDateTrain, traininfo } from '@/api/training'
 
 export default {
     mixins: [UpdateMixin],
     data() {
         return {
             activeType: [],
-            rules: {},
+            rules: {
+                title: [{ required: true, message: '请输入', trigger: 'change' }],
+                activity_time: [{ required: true, message: '请输入', trigger: 'change' }],
+                tutor: [{ required: true, message: '请输入', trigger: 'change' }],
+                money: [{ required: true, message: '请输入', trigger: 'change' }],
+                banner_url: [{ required: true, message: '请上传', trigger: 'change' }]
+            },
             form: {
                 train_id: '',
                 title: '',
                 activity_time: '',
                 tutor: '',
-                money: '',
-                cover: '',
+                money: undefined,
+                banner_url: '',
                 orders: '',
                 desc: '',
-                age: {
-                    calculation: '',
-                    value: '',
-                    discount_money: '',
-                    rule_type: 'age'
-                },
-                time: {
-                    calculation: '',
-                    value: '',
-                    discount_money: '',
-                    rule_type: 'time'
-                },
-                number: {
-                    calculation: '',
-                    value: '',
-                    discount_money: '',
-                    rule_type: 'number'
-                },
+                status: 1,
+                rule: {
+                    age: {
+                        id: '',
+                        calculation: '',
+                        value: undefined,
+                        discount_money: undefined,
+                        rule_type: 'age'
+                    },
+                    time: {
+                        id: '',
+                        calculation: '',
+                        value: '',
+                        discount_money: undefined,
+                        rule_type: 'time'
+                    },
+                    number: {
+                        id: '',
+                        calculation: '',
+                        value: undefined,
+                        discount_money: undefined,
+                        rule_type: 'number'
+                    }
+                }
             },
             file: {},
             api: {
                 updateSingle: upDateTrain
             },
+            loading: true,
             ageOptions: [{
               value: '>',
               label: '大于'
@@ -143,48 +165,63 @@ export default {
         }
     },
     created() {
-        console.log(this.mes)
-        console.log(this.form)
+        if (this.mes.id) {
+            this.form.train_id = this.mes.id
+            this.getDetails()
+        } else {
+            this.loading = false
+        }
     },
     methods: {
-        changeFile(file) {
-            this.file = file
+        uploadSuccess(data) {
+            this.form.banner_url = data
         },
 
-        submitForm() {
-            const that = this
-            this.$refs.form.validate((valid) => {
-                if (valid) {
-                    let formData = new FormData()
-                    if (this.form.type == 0) {
-                        this.form.url = ''
+        getDetails() {
+            let that = this
+            that.loading = true
+            traininfo({
+                train_id: that.mes.id
+            }).then(response => {
+                const { data } = response
+                let formObj = Object.assign(that.form, data.info)
+                let rule = data.rule
+                formObj.rule = {
+                    age: {
+                        id: rule.age.id,
+                        calculation: rule.age.rule.calculation,
+                        value: rule.age.rule.value,
+                        discount_money: rule.age.discount_money,
+                        rule_type: 'age'
+                    },
+                    time: {
+                        id: rule.time.id,
+                        calculation: rule.time.rule.calculation,
+                        value: rule.time.rule.value,
+                        discount_money: rule.time.discount_money,
+                        rule_type: 'time'
+                    },
+                    number: {
+                        id: rule.number.id,
+                        calculation: rule.number.rule.calculation,
+                        value: rule.number.rule.value,
+                        discount_money: rule.number.discount_money,
+                        rule_type: 'number'
                     }
-                    for (let i in this.form) {
-                        formData.append(i, this.form[i])
-                    }
-                    if (this.file.raw) {
-                        formData.append('file', this.file.raw)
-                    } else if (!this.file.url) {
-                        this.$message.error('请上传图片')
-                        return false
-                    }
-                    
-                    let type = this.form.id ? '2' : '1'
-                    this.loading = true
-                    updateRecord(formData, type).then(response => {
-                        this.common.closeComponent(this)
-                    }).finally(() => {
-                        this.loading = false
-                    })
                 }
+                that.form = formObj
+                if (data.info.banner_url) {
+                    that.$set(that.file, 'url', this.$common.ip + data.info.banner_url)
+                } else {
+                    that.$set(that.file, 'url', '')
+                }
+            }).finally(() => {
+                that.loading = false
             })
-            }
+        }
     }
 }
 </script>
 
 <style scoped>
-.el-checkbox-group{
-    font-size: 14px !important;
-}
 </style>

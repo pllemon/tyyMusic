@@ -3,18 +3,36 @@
         <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="100px" :validate-on-rule-change="false">
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="比赛名称：" prop="name">
-                        <el-input type="text" v-model="form.name" placeholder="请输入" clearable />
+                    <el-form-item label="比赛名称：" prop="title">
+                        <el-input type="text" v-model="form.title" placeholder="请输入" clearable />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="开展时间：" prop="time">
-                        <el-input type="text" v-model="form.time" placeholder="请输入" clearable />
+                    <el-form-item label="开展时间：" prop="activity_time">
+                        <el-input type="text" v-model="form.activity_time" placeholder="请输入" clearable />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="比赛状态：" prop="teacher">
-                        <el-input type="text" v-model="form.teacher" placeholder="请输入" clearable />
+                    <el-form-item label="金额：" prop="money">
+                        <el-input-number style="width:100%" v-model="form.money" placeholder="请输入" :precision="2" />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="排序：" prop="orders">
+                        <el-input type="text" v-model="form.orders" placeholder="请输入" clearable />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="状态：" prop="status">
+                        <el-radio-group v-model="form.status">
+                            <el-radio :label="1">启用</el-radio>
+                            <el-radio :label="2">禁用</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="描述：" prop="desc">
+                        <el-input type="textarea" :rows="4" v-model="form.desc" placeholder="请输入" clearable />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -50,7 +68,7 @@
 </template>
 <script>
 import UpdateMixin from '@/mixin/update'
-// import { checkRecord } from '@/api/householdManager/householdExamine'
+import { upDateExamination, examinationinfo } from '@/api/examination'
 
 export default {
     mixins: [UpdateMixin],
@@ -58,27 +76,17 @@ export default {
         return {
             rules: {},
             form: {
-                name: '',
-                time: '',
-                teacher: '',
-                price: '',
-                cover: '',
-                birdPrice: '',
-                group: [{
-                    name: '',
-                    group: ''
-                }]
+                title: '',
+                activity_time: '',
+                money: '',
+                orders: '',
+                desc: '',
+                status: 1,
+                group: []
             },
             api: {
-                // updateSingle: checkRecord
-            },
-            ageOptions: [{
-              value: '1',
-              label: '大于'
-            },{
-              value: '2',
-              label: '大于等于'
-            }]
+                updateSingle: upDateExamination
+            }
         }
     },
     created() {
@@ -86,10 +94,7 @@ export default {
     },
     methods: {
         addGroup() {
-            this.form.group.push({
-                name: '',
-                price: ''
-            })
+            this.form.group.push('')
         },
         delGroup(idx) {
             this.form.group.splice(idx, 1)

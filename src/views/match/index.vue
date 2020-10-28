@@ -9,8 +9,8 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">新建课程</el-button>
-        <el-button size="small" type="primary">导出课程信息</el-button>
+        <el-button size="small" type="primary" @click="setting()">新建比赛</el-button>
+        <el-button size="small" type="primary">导出比赛信息</el-button>
       </template>
 
       <template>
@@ -23,15 +23,16 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="比赛名称" fixed prop="status" />
-          <el-table-column label="开展时间" prop="status" />
-          <el-table-column label="比赛状态" prop="status" />
-          <el-table-column label="比赛费用" prop="status" />
-          <el-table-column label="报名人数" prop="status" />
-          <el-table-column label="已收费用" prop="status" />
-          <el-table-column label="优惠价格" prop="status" />
-          <el-table-column label="报名人数" prop="status" />
-          <el-table-column label="已收费用" prop="status" />
+          <el-table-column label="比赛名称" prop="title" />
+          <el-table-column label="开展时间" prop="activity_time" />
+          <el-table-column label="比赛状态" prop="status">
+            <template slot-scope="scope">
+              {{scope.row.status == 1 ? '启用' : '禁用'}}
+            </template>
+          </el-table-column>
+          <el-table-column label="比赛费用" prop="money" />
+          <el-table-column label="报名人数" prop="sumper" />
+          <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="操作"  fixed="right" width="250">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
@@ -58,7 +59,7 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/training'
+import { examinationList } from '@/api/examination'
 import SettingDialog from '@/views/match/setting'
 
 export default {
@@ -68,20 +69,15 @@ export default {
   },
   data() {
     return {
+      api: {
+        getList: examinationList
+      }
     }
   },
   created() {
-    this.fetchData()
+    this.getList()
   },
   methods: {
-    fetchData() {
-      this.loading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.loading = false
-      })
-    },
-
     signRecord(id) {
       this.$router.push('signRecord?id=' + id)
     },

@@ -1,32 +1,32 @@
 import request from '@/utils/request'
 
-export function trainList(data) {
+export function trainList(params) {
   return request({
     url: '/admin/trainlist',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
-export function signUpList(data) {
+export function signUpList(params) {
   return request({
     url: '/admin/trainsignuplist',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
-export function traininfo(data) {
+export function traininfo(params) {
   return request({
     url: '/admin/traininfo',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
 export function upDateTrain(data) {
   let url = '/admin/addtrain'
-  if (data.id) {
+  if (data.train_id) {
     url = '/admin/updatetrain'
   }
   return request({

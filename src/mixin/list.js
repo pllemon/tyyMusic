@@ -48,9 +48,9 @@ export default {
                 if (this.afterGetList) {
                     this.afterGetList(data)
                 } else {
-                    this.list = data.rows
+                    this.list = data
                 }
-                this.total = data.total
+                // this.total = data.total
                 this.$nextTick(() => {
                     if (this.$refs.table) {
                         this.$refs.table.bodyWrapper.scrollTop = 0

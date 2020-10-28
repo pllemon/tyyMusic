@@ -99,3 +99,16 @@
 .el-select{
   width: 100%;
 }
+
+
+
+.el-checkbox-group{
+  font-size: 14px !important;
+}
+.el-input-number .el-input__inner{
+  text-align: left;
+  padding-left: 15px !important;
+}
+.el-input-number__decrease, .el-input-number__increase{
+  display: none !important;
+}

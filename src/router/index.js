@@ -74,12 +74,6 @@ export const constantRoutes = [
         component: () => import('@/views/training/signRecord'),
         meta: { title: '报名详情', icon: 'table', inlinePage: true },
         hidden: true
-      },
-      {
-        path: 'training',
-        name: 'training',
-        component: () => import('@/views/training/list'),
-        meta: { title: '规则管理', icon: 'table', keepAlive: true }
       }
     ]
   },

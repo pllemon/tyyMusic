@@ -23,19 +23,19 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="课程名称" fixed prop="status" />
-          <el-table-column label="开展时间" prop="status" />
-          <el-table-column label="教授老师" prop="status" />
-          <el-table-column label="原价格" prop="status" />
-          <el-table-column label="早鸟价格" prop="status" />
-          <el-table-column label="团购价格" prop="status" />
-          <el-table-column label="优惠价格" prop="status" />
-          <el-table-column label="报名人数" prop="status" />
-          <el-table-column label="已收费用" prop="status" />
+          <el-table-column label="课程名称" fixed prop="title" />
+          <el-table-column label="开展时间" prop="activity_time" />
+          <el-table-column label="教授老师" prop="tutor" />
+          <el-table-column label="原价格" prop="money" />
+          <el-table-column label="早鸟价格" prop="time" />
+          <el-table-column label="团购价格" prop="number" />
+          <el-table-column label="优惠价格" prop="age" />
+          <el-table-column label="报名人数" prop="sumper" />
+          <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="操作"  fixed="right" width="200">
             <template slot-scope="scope">
-              <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
-              <el-button type="text" @click="setting(scope.row.id)">配置活动</el-button>
+              <el-button type="text" @click="signRecord(scope.row.train_id)">查看报名</el-button>
+              <el-button type="text" @click="setting(scope.row.train_id)">配置活动</el-button>
             </template>
           </el-table-column>
         </el-table>

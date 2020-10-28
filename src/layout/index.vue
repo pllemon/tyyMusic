@@ -1,13 +1,27 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div class="header"></div>
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+    <div class="header">
+      <div class="title">管理平台</div>
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link">
+          <i class="el-icon-user-solid"></i>
+          admin
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="2">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <div class="contents">
+      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+      <sidebar class="sidebar-container" />
+      <div class="main-container">
+        <div :class="{'fixed-header':fixedHeader}">
+          <navbar />
+        </div>
+        <app-main />
       </div>
-      <app-main />
     </div>
   </div>
 </template>
@@ -44,6 +58,19 @@ export default {
     }
   },
   methods: {
+    handleCommand(command) {
+      if (command == 2) {
+        this.$confirm('确定退出该账号？', '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.logout()
+        }).catch()
+      }
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push('/login')
+    },
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
@@ -62,9 +89,15 @@ export default {
     width: 100%;
     box-sizing: border-box;
     bottom: 0px;
+    display: flex;
+    flex-direction:  column;
     &.mobile.openSidebar{
       position: fixed;
       top: 0px;
+    }
+    .contents{
+      flex: 1;
+      width: 100%;
     }
   }
   .drawer-bg {
@@ -94,12 +127,33 @@ export default {
     width: 100%;
   }
 
-  .header{
-    height: 50px;
-    background-color: #477bf6;
-    color: #fff;
-    padding: 0 50px;
-    display: flex;
-    align-items: center;
+</style>
+
+<style lang="scss" scoped>
+.header{
+  width: 100%;
+  height: 50px;
+  background: #477bf6;
+  color: #fff;
+  flex-shrink: 0;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title{
+    font-size: 22px;
+    margin-right: 10px;
   }
+  .el-dropdown{
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+.dropdown{
+  border: 1px solid #f8f8f8;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px !important;
+}
 </style>

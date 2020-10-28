@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <!-- <img class="ch" src='../../assets/image/bg2.png'/> -->
+    <img class="ch" src='../../assets/image/bg2.png'/>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">管理平台</h3>
