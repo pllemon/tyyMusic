@@ -1,5 +1,5 @@
-import { login } from '@/api/user'
-import { getDetails } from '@/api/user'
+import { login } from '@/api/common'
+import { getDetails } from '@/api/common'
 import { getToken, setToken, removeToken, setLoginStorage, removeLoginStorage, setAccountId, getAccountId, removeAccountId } from '@/utils/auth'
 
 const state = {

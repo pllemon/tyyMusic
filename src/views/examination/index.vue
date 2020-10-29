@@ -3,8 +3,8 @@
     <list-layout>
       <template slot="search">
         <div class="fx-cs">
-          <el-input size="small" style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
-          <el-button size="small">搜索</el-button>
+          <el-input size="small" v-model="query.keyword" clearable style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
+          <el-button size="small" @click="search">搜索</el-button>
         </div>
       </template>
 
@@ -25,7 +25,7 @@
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
           <el-table-column label="比赛名称" prop="title" />
           <el-table-column label="开展时间" prop="activity_time" />
-          <el-table-column label="比赛状态" prop="status">
+          <el-table-column label="状态" prop="status">
             <template slot-scope="scope">
               {{scope.row.status == 1 ? '启用' : '禁用'}}
             </template>
@@ -35,9 +35,9 @@
           <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="操作"  fixed="right" width="250">
             <template slot-scope="scope">
-              <el-button type="text" @click="signRecord(scope.row.id)">查看报名</el-button>
-              <el-button type="text" @click="setting(scope.row.id)">查看成绩</el-button>
-              <el-button type="text" @click="setting(scope.row.id)">配置比赛</el-button>
+              <el-button type="text" @click="signRecord(scope.row.examination_id)">查看报名</el-button>
+              <el-button type="text" >查看成绩</el-button>
+              <el-button type="text" @click="setting(scope.row.examination_id)">配置比赛</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -60,7 +60,7 @@
 <script>
 import ListMixin from '@/mixin/list'
 import { examinationList } from '@/api/examination'
-import SettingDialog from '@/views/match/setting'
+import SettingDialog from '@/views/examination/setting'
 
 export default {
   mixins: [ListMixin],

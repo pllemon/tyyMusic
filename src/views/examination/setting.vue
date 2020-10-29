@@ -13,11 +13,6 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="金额：" prop="money">
-                        <el-input-number style="width:100%" v-model="form.money" placeholder="请输入" :precision="2" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
                     <el-form-item label="排序：" prop="orders">
                         <el-input type="text" v-model="form.orders" placeholder="请输入" clearable />
                     </el-form-item>
@@ -39,12 +34,16 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="比赛组别：" prop="price">
+                    <el-form-item label="比赛组别：">
                         <div class="fx-cs group" v-for="(item,index) in form.group" :key="index">
                             <span>名称</span>
-                            <el-input type="text" v-model="item.name" placeholder="请输入" clearable />
+                            <el-form-item :prop="'group.'+index+'.group_name'" :rules="rules.group_name">
+                                <el-input type="text" v-model="item.group_name" placeholder="请输入" clearable />
+                            </el-form-item>
                             <span>费用</span>
-                            <el-input type="text" v-model="item.price" placeholder="请输入" clearable />
+                            <el-form-item :prop="'group.'+index+'.money'" :rules="rules.money">
+                                <el-input-number v-model="item.money" placeholder="请输入" :precision="2" />
+                            </el-form-item>
                             <el-button @click="addGroup" type="success" plain icon="el-icon-plus" size="mini" v-if="index == 0">添加</el-button>
                             <el-button @click="delGroup(index)" type="danger" plain icon="el-icon-minus" size="mini" v-if="index != 0">删除</el-button>
                         </div>
@@ -54,13 +53,19 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="封面图：" prop="cover">
-                        <upload-pic v-model="form.cover" :disabled="readonly" />
+                    <el-form-item label="封面图：" prop="banner_url">
+                        <gd-upload
+                            v-if="finish"
+                            action='admin/uploadimg'
+                            type="examination"
+                            :file="file"  
+                            @success="uploadSuccess"
+                        />
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer" v-show="!loading">
             <el-button size="small" @click="close">取 消</el-button>
             <el-button type="primary" :loading="loading" size="small" @click="updateSingle">确 定</el-button>
         </span>
@@ -74,27 +79,79 @@ export default {
     mixins: [UpdateMixin],
     data() {
         return {
-            rules: {},
+            rules: {
+                title: [{ required: true, message: '请输入', trigger: 'change' }],
+                activity_time: [{ required: true, message: '请输入', trigger: 'change' }],
+                group_name: [{ required: true, message: '请输入', trigger: 'change' }],
+                money: [{ required: true, message: '请输入', trigger: 'change' }],
+            },
             form: {
+                examination_id: '',
                 title: '',
                 activity_time: '',
-                money: '',
                 orders: '',
                 desc: '',
                 status: 1,
-                group: []
+                group: [{
+                    group_name: '',
+                    money: undefined
+                }]
             },
+            file: {},
             api: {
                 updateSingle: upDateExamination
-            }
+            },
+            loading: true,
+            finish: false
         }
     },
     created() {
-        // this.form.ids = this.mes.data.ids
+        if (this.mes.id) {
+            this.form.examination_id = this.mes.id
+            this.getDetails()
+        } else {
+            this.loading = false
+            this.finish = true
+        }
     },
     methods: {
+        uploadSuccess(data) {
+            this.form.banner_url = data
+        },
+
+        getDetails() {
+            let that = this
+            that.loading = true
+            examinationinfo({
+                examination_id: that.mes.id
+            }).then(response => {
+                const { data } = response
+                let formObj = Object.assign(that.form, data.info)
+                if (data.group && data.group.length) {
+                    formObj.group = data.group
+                } else {
+                    formObj.group = [{
+                        group_name: '',
+                        money: undefined
+                    }]
+                }
+                that.form = formObj
+                if (data.info.banner_url) {
+                    that.$set(that.file, 'url', this.$common.ip + data.info.banner_url)
+                } else {
+                    that.$set(that.file, 'url', '')
+                }
+            }).finally(() => {
+                that.loading = false
+                that.finish = true
+            })
+        },
+
         addGroup() {
-            this.form.group.push('')
+            this.form.group.push({
+                group_name: '',
+                money: undefined
+            })
         },
         delGroup(idx) {
             this.form.group.splice(idx, 1)
@@ -102,14 +159,15 @@ export default {
     }
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 .group{
-    margin-bottom: 10px;
-    .el-input{
+    margin-bottom: 18px;
+    .el-form-item{
         margin: 0 10px;
         width: 150px;
     }
-    .el-button{
+    .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
+        margin-bottom: 0;
     }
 }
 </style>

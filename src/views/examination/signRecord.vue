@@ -22,16 +22,18 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="姓名" prop="signup_name" />
-          <el-table-column label="身份证信息" prop="peopleid" />
+          <el-table-column label="报名人" prop="guardian" />
           <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="原价格" prop="money" />
-          <el-table-column label="购买类型" prop="type" />
-          <el-table-column label="价格" prop="should_pay_money" />
-          <el-table-column label="支付时间" prop="pay_time" />
-          <el-table-column label="支付状态" prop="pay_status">
+          <el-table-column label="出生年月日" prop="birthday" />
+          <el-table-column label="身份证号码" prop="peopleid" />
+          <el-table-column label="参数组别" prop="" />
+          <el-table-column label="奖项" prop="" />
+          <el-table-column label="指导老师" prop="instructor" />
+          <el-table-column label="联系方式" prop="instructor_phone" />
+          <el-table-column label="操作" prop="action" width="200">
             <template slot-scope="scope">
-              {{scope.row.pay_status == 1 ? '已付款' : '未付款'}}
+              <el-button type="text" >查看更多</el-button>
+              <el-button type="text" >查看曲目</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -53,14 +55,14 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { signUpList } from '@/api/training'
+import { signUpList } from '@/api/examination'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
       query: {
-        train_id: ''
+        examination_id: ''
       },
       api: {
         getList: signUpList
@@ -69,13 +71,12 @@ export default {
     }
   },
   created() {
-    this.query.train_id = this.$route.query.id
+    this.query.examination_id = this.$route.query.id
     this.getList()
   },
   methods: {
     afterGetList(data) {
-      console.log(data)
-      this.list = data.list.data
+      this.list = data.list
       this.mes = data.info
     }
   }

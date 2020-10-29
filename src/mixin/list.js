@@ -15,7 +15,8 @@ export default {
             query: {
                 page: 1,
                 limit: 20,
-                orderBy: 'crtTime_descending'
+                orderBy: 'crtTime_descending',
+                keyword: ''
             },
             list: [],
             total: 0,
@@ -30,6 +31,19 @@ export default {
         }
     },
     methods: {
+        // 导出
+        exportExcel() {
+            $(this.$refs.exportForm).find('div').html('')
+            for (let i in this.query) {
+              if (this.query[i] != '' && i != 'page' && i != 'limit') {
+               $(this.$refs.exportForm).find('div').append(
+                 `<input type="text" name="${i}" value="${this.query[i]}"/>`
+               ) 
+              }
+            }
+            $(this.$refs.exportForm).submit()
+        },
+
         // 获取列表
         getList() {
             if (this.beforeGetList) {

@@ -3,17 +3,23 @@
     <list-layout>
       <template slot="search">
         <div class="fx-cs">
-          <el-input size="small" style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
-          <el-button size="small">搜索</el-button>
+          <el-input size="small" v-model="query.keyword" clearable style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
+          <el-button size="small" @click="search">搜索</el-button>
         </div>
       </template>
 
       <template slot="action">
         <el-button size="small" type="primary" @click="setting()">新建课程</el-button>
-        <el-button size="small" type="primary">导出课程信息</el-button>
+        <el-button size="small" type="primary" @click="exportExcel()">导出课程信息</el-button>
       </template>
 
       <template>
+        <!-- 导出 -->
+        <form ref="exportForm" action="/admin/craftsmanlist" method="post" style="display:none">
+          <input name="model" value="exportToExcel" />
+          <div></div>
+        </form>
+
         <el-table
           v-loading="loading"
           :data="list"

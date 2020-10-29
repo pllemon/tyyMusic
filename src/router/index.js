@@ -46,12 +46,12 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/userlist',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      path: 'userlist',
+      name: 'Userlist',
+      component: () => import('@/views/userlist/index'),
+      meta: { title: '用户管理', icon: 'el-icon-user' }
     }]
   },
 
@@ -60,42 +60,63 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/training/list',
     name: 'training',
-    meta: { title: '培训管理', icon: 'el-icon-s-help' },
+    meta: { title: '培训管理', icon: 'el-icon-collection' },
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/training/list'),
-        meta: { title: '课程列表', icon: 'table', keepAlive: true }
+        meta: { title: '课程列表', icon: 'el-icon-collection', keepAlive: true }
       },
       {
         path: 'signRecord',
         name: 'signRecord',
         component: () => import('@/views/training/signRecord'),
-        meta: { title: '报名详情', icon: 'table', inlinePage: true },
+        meta: { title: '报名详情', icon: '', inlinePage: true },
         hidden: true
       }
     ]
   },
   {
-    path: '/match',
+    path: '/examination',
     component: Layout,
-    redirect: '/match/list',
-    name: 'match',
-    meta: { title: '比赛管理', icon: 'el-icon-s-help' },
+    redirect: '/examination/list',
+    name: 'examination',
+    meta: { title: '比赛管理', icon: 'el-icon-medal' },
     children: [
       {
         path: 'list',
         name: 'list',
-        component: () => import('@/views/match/index'),
-        meta: { title: '比赛列表', icon: 'table', keepAlive: true }
+        component: () => import('@/views/examination/index'),
+        meta: { title: '比赛列表', icon: 'el-icon-medal', keepAlive: true }
       },
       {
         path: 'signRecord',
         name: 'signRecord',
-        component: () => import('@/views/match/signRecord'),
-        meta: { title: '报名详情', icon: 'table', inlinePage: true },
+        component: () => import('@/views/examination/signRecord'),
+        meta: { title: '报名详情', icon: '', inlinePage: true },
         hidden: true
+      }
+    ]
+  },
+  {
+    path: '/payRecord',
+    component: Layout,
+    redirect: '/payRecord/training',
+    name: 'payRecord',
+    meta: { title: '购买记录', icon: 'el-icon-wallet' },
+    children: [
+      {
+        path: 'training',
+        name: 'training',
+        component: () => import('@/views/payRecord/training'),
+        meta: { title: '课程购买记录', icon: '' }
+      },
+      {
+        path: 'examination',
+        name: 'examination',
+        component: () => import('@/views/payRecord/examination'),
+        meta: { title: '比赛购买记录', icon: '' },
       }
     ]
   },

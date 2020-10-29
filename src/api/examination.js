@@ -8,11 +8,11 @@ export function examinationList(params) {
   })
 }
 
-export function signUpList(data) {
+export function signUpList(params) {
   return request({
     url: '/admin/examinationsignuplist',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 
@@ -26,7 +26,7 @@ export function examinationinfo(params) {
 
 export function upDateExamination(data) {
   let url = '/admin/addexamination'
-  if (data.id) {
+  if (data.examination_id) {
     url = '/admin/updateexamination'
   }
   return request({

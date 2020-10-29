@@ -9,7 +9,7 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出用户信息</el-button>
+        <el-button size="small" type="primary">导出购买记录</el-button>
       </template>
 
       <template>
@@ -22,16 +22,23 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="姓名" prop="signup_name" />
-          <el-table-column label="身份证信息" prop="peopleid" />
-          <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="原价格" prop="money" />
-          <el-table-column label="购买类型" prop="type" />
-          <el-table-column label="价格" prop="should_pay_money" />
+          <el-table-column label="订单号" fixed prop="ordersn" />
           <el-table-column label="支付时间" prop="pay_time" />
+          <el-table-column label="付款人姓名" prop="" />
+          <el-table-column label="报名人姓名" prop="signup_name" />
+          <el-table-column label="联系信息" prop="phone" />
+          <el-table-column label="课程名称" prop="" />
+          <el-table-column label="原价格" prop="money" />
+          <el-table-column label="实际支付" prop="should_pay_money" />
           <el-table-column label="支付状态" prop="pay_status">
             <template slot-scope="scope">
               {{scope.row.pay_status == 1 ? '已付款' : '未付款'}}
+            </template>
+          </el-table-column>
+          <el-table-column label="优惠情况" prop="discount_type" />
+          <el-table-column label="操作"  fixed="right" width="100">
+            <template slot-scope="scope">
+              <el-button type="text" @click="refund(scope.row.id)">退款</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -53,31 +60,22 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { signUpList } from '@/api/training'
+import { trainlistpaylog } from '@/api/common'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
-      query: {
-        train_id: ''
-      },
       api: {
-        getList: signUpList
-      },
-      mes: {}
+        getList: trainlistpaylog
+      }
     }
   },
   created() {
-    this.query.train_id = this.$route.query.id
     this.getList()
   },
   methods: {
-    afterGetList(data) {
-      console.log(data)
-      this.list = data.list.data
-      this.mes = data.info
-    }
+    refund(id) {}
   }
 }
 </script>

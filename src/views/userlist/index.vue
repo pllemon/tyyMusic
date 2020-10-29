@@ -22,18 +22,12 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="姓名" prop="signup_name" />
-          <el-table-column label="身份证信息" prop="peopleid" />
-          <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="原价格" prop="money" />
-          <el-table-column label="购买类型" prop="type" />
-          <el-table-column label="价格" prop="should_pay_money" />
-          <el-table-column label="支付时间" prop="pay_time" />
-          <el-table-column label="支付状态" prop="pay_status">
-            <template slot-scope="scope">
-              {{scope.row.pay_status == 1 ? '已付款' : '未付款'}}
-            </template>
-          </el-table-column>
+          <el-table-column label="姓名" fixed prop="" />
+          <el-table-column label="身份证信息" prop="" />
+          <el-table-column label="联系方式" prop="" />
+          <el-table-column label="监护人" prop="" />
+          <el-table-column label="注册时间" prop="" />
+          <el-table-column label="最后登录时间" prop="" />
         </el-table>
       </template>
 
@@ -53,31 +47,19 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { signUpList } from '@/api/training'
+import { getList } from '@/api/user'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
-      query: {
-        train_id: ''
-      },
       api: {
-        getList: signUpList
-      },
-      mes: {}
+        getList
+      }
     }
   },
   created() {
-    this.query.train_id = this.$route.query.id
     this.getList()
-  },
-  methods: {
-    afterGetList(data) {
-      console.log(data)
-      this.list = data.list.data
-      this.mes = data.info
-    }
   }
 }
 </script>

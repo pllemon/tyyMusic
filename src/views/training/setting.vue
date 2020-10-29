@@ -114,7 +114,6 @@ export default {
                 activity_time: [{ required: true, message: '请输入', trigger: 'change' }],
                 tutor: [{ required: true, message: '请输入', trigger: 'change' }],
                 money: [{ required: true, message: '请输入', trigger: 'change' }],
-                banner_url: [{ required: true, message: '请上传', trigger: 'change' }]
             },
             form: {
                 train_id: '',

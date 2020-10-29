@@ -137,6 +137,9 @@ export default {
             .search{
                 flex: 1;
                 margin-right: 20px;
+                .el-button{
+                    margin-left: 10px;
+                }
             }
             .action{
                 max-width: 300px;
