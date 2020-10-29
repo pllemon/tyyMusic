@@ -35,9 +35,14 @@
               {{scope.row.pay_status == 1 ? '已付款' : '未付款'}}
             </template>
           </el-table-column>
+          <el-table-column label="退款状态" prop="refund_status">
+            <template slot-scope="scope">
+              {{scope.row.refund_status == 1 ? '已退款' : '未退款'}}
+            </template>
+          </el-table-column>
           <el-table-column label="操作"  fixed="right" width="100">
             <template slot-scope="scope">
-              <el-button type="text" @click="refund(scope.row.id)">退款</el-button>
+              <el-button type="text"  v-if="scope.row.pay_status == 1" @click="refund(scope.row.ordersn)">退款</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,7 +64,7 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { examinationpaylog } from '@/api/common'
+import { examinationpaylog, refundorder } from '@/api/common'
 
 export default {
   mixins: [ListMixin],
@@ -74,7 +79,19 @@ export default {
     this.getList()
   },
   methods: {
-    refund(id) {}
+    refund(id) {
+      this.$confirm('确定退款?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        refundorder({ordersn: id}).then(res => {
+          this.$common.successNotify(res.message)
+        })
+      }).catch(() => {
+              
+      })
+    }
   }
 }
 </script>

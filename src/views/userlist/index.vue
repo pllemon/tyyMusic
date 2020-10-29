@@ -22,12 +22,9 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="姓名" fixed prop="" />
-          <el-table-column label="身份证信息" prop="" />
-          <el-table-column label="联系方式" prop="" />
-          <el-table-column label="监护人" prop="" />
-          <el-table-column label="注册时间" prop="" />
-          <el-table-column label="最后登录时间" prop="" />
+          <el-table-column label="联系方式" prop="phone" />
+          <el-table-column label="注册时间" prop="time" />
+          <el-table-column label="最后登录时间" prop="login_time" />
         </el-table>
       </template>
 

@@ -72,7 +72,7 @@ export const constantRoutes = [
         path: 'signRecord',
         name: 'signRecord',
         component: () => import('@/views/training/signRecord'),
-        meta: { title: '报名详情', icon: '', inlinePage: true },
+        meta: { title: '报名详情', icon: '', inlinePage: true, activeMenu: '/training/list' },
         hidden: true
       }
     ]
@@ -94,7 +94,7 @@ export const constantRoutes = [
         path: 'signRecord',
         name: 'signRecord',
         component: () => import('@/views/examination/signRecord'),
-        meta: { title: '报名详情', icon: '', inlinePage: true },
+        meta: { title: '报名详情', icon: '', inlinePage: true , activeMenu: '/examination/list'},
         hidden: true
       }
     ]

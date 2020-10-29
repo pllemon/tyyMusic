@@ -31,3 +31,11 @@ export function examinationpaylog(params) {
     params
   })
 }
+
+export function refundorder(data) {
+  return request({
+    url: '/admin/refundorder',
+    method: 'post',
+    data
+  })
+}
