@@ -36,7 +36,7 @@
           <el-table-column label="操作"  fixed="right" width="250">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.examination_id)">查看报名</el-button>
-              <el-button type="text" @click="achievement(scope.row.examination_id)">查看成绩</el-button>
+              <el-button type="text" @click="upload(scope.row.examination_id)">查看成绩</el-button>
               <el-button type="text" @click="setting(scope.row.examination_id)">配置比赛</el-button>
             </template>
           </el-table-column>
@@ -61,11 +61,13 @@
 import ListMixin from '@/mixin/list'
 import { examinationList } from '@/api/examination'
 import SettingDialog from '@/views/examination/setting'
+import UploadDialog from '@/views/examination/upload'
 
 export default {
   mixins: [ListMixin],
   components: {
-    SettingDialog
+    SettingDialog,
+    UploadDialog
   },
   data() {
     return {
@@ -84,6 +86,10 @@ export default {
 
     achievement(id) {
       this.$router.push('achievement?id=' + id)
+    },
+
+    upload(id) {
+      this.loadComponent('UploadDialog', {id})
     },
 
     setting(id) {

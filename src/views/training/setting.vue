@@ -85,7 +85,7 @@
                     <el-form-item label="封面图：" prop="banner_url">
                         <gd-upload
                             v-if="!loading"
-                            action='admin/uploadimg'
+                            action='https://music.eqask.com/admin/uploadimg'
                             type="train"
                             :file="file"  
                             @success="uploadSuccess"

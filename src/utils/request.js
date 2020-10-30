@@ -4,7 +4,7 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: 'https://music.eqask.com/', // url = base url + request url
   timeout: 30000 // request timeout
 })
 
