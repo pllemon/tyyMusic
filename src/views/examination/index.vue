@@ -25,18 +25,18 @@
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
           <el-table-column label="比赛名称" prop="title" />
           <el-table-column label="开展时间" prop="activity_time" />
-          <el-table-column label="状态" prop="status">
+          <el-table-column label="比赛状态" prop="status">
             <template slot-scope="scope">
-              {{scope.row.status == 1 ? '启用' : '禁用'}}
+              {{scope.row.status == 1 ? '开启报名' : '关闭报名'}}
             </template>
           </el-table-column>
-          <el-table-column label="比赛费用" prop="money" />
+          <!-- <el-table-column label="比赛费用" prop="money" /> -->
           <el-table-column label="报名人数" prop="sumper" />
           <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="操作"  fixed="right" width="250">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.examination_id)">查看报名</el-button>
-              <el-button type="text" >查看成绩</el-button>
+              <el-button type="text" @click="achievement(scope.row.examination_id)">查看成绩</el-button>
               <el-button type="text" @click="setting(scope.row.examination_id)">配置比赛</el-button>
             </template>
           </el-table-column>
@@ -80,6 +80,10 @@ export default {
   methods: {
     signRecord(id) {
       this.$router.push('signRecord?id=' + id)
+    },
+
+    achievement(id) {
+      this.$router.push('achievement?id=' + id)
     },
 
     setting(id) {

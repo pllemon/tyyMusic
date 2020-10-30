@@ -96,9 +96,17 @@ export const constantRoutes = [
         component: () => import('@/views/examination/signRecord'),
         meta: { title: '报名详情', icon: '', inlinePage: true , activeMenu: '/examination/list'},
         hidden: true
+      },
+      {
+        path: 'achievement',
+        name: 'achievement',
+        component: () => import('@/views/examination/achievement'),
+        meta: { title: '查看成绩', icon: '', inlinePage: true , activeMenu: '/examination/list'},
+        hidden: true
       }
     ]
   },
+
   {
     path: '/payRecord',
     component: Layout,
@@ -117,6 +125,57 @@ export const constantRoutes = [
         name: 'examination',
         component: () => import('@/views/payRecord/examination'),
         meta: { title: '比赛购买记录', icon: '' },
+      }
+    ]
+  },
+  
+  {
+    path: '/income',
+    component: Layout,
+    redirect: '/income/training',
+    name: 'income',
+    meta: { title: '财务报表', icon: 'el-icon-data-analysis' },
+    children: [
+      {
+        path: 'all',
+        name: 'all',
+        component: () => import('@/views/income/all'),
+        meta: { title: '财务报表', icon: 'el-icon-data-analysis' }
+      },
+      // {
+      //   path: 'training',
+      //   name: 'training',
+      //   component: () => import('@/views/income/training'),
+      //   meta: { title: '培训收入统计', icon: '' }
+      // },
+      // {
+      //   path: 'examination',
+      //   name: 'examination',
+      //   component: () => import('@/views/income/examination'),
+      //   meta: { title: '比赛收入统计', icon: '' },
+      // }
+    ]
+  },
+
+  
+  {
+    path: '/record',
+    component: Layout,
+    redirect: '/record/action',
+    name: 'record',
+    meta: { title: '访问日志', icon: 'el-icon-document' },
+    children: [
+      {
+        path: 'action',
+        name: 'action',
+        component: () => import('@/views/record/action'),
+        meta: { title: '后台操作日志', icon: '' }
+      },
+      {
+        path: 'share',
+        name: 'share',
+        component: () => import('@/views/record/share'),
+        meta: { title: '用户分享列表', icon: '' }
       }
     ]
   },

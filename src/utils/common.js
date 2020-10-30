@@ -28,7 +28,7 @@ function deepCopy(obj) {
 
 
 export default {
-  ip: 'http://www.dsfjjwx.com:8081/',
+  ip: 'https://music.eqask.com/',
   successNotify,
   deepCopy
 }

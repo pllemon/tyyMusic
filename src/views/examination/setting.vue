@@ -18,10 +18,10 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="状态：" prop="status">
+                    <el-form-item label="比赛状态：" prop="status">
                         <el-radio-group v-model="form.status">
-                            <el-radio :label="1">启用</el-radio>
-                            <el-radio :label="2">禁用</el-radio>
+                            <el-radio :label="1">开启报名</el-radio>
+                            <el-radio :label="2">关闭报名</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>

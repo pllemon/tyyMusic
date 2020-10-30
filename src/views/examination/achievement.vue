@@ -22,13 +22,17 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="注册时间" prop="time" />
-          <el-table-column label="最后登录时间" prop="login_time" />
+          <el-table-column label="考生姓名" prop="guardian" />
+          <el-table-column label="报考专业" prop="phone" />
+          <el-table-column label="报考级别" prop="birthday" />
+          <el-table-column label="考试科目" prop="peopleid" />
+          <el-table-column label="考试结果" prop="" />
+          <el-table-column label="身份证号" prop="" />
+          <el-table-column label="准考证号" prop="instructor" />
         </el-table>
       </template>
 
-      <template slot="page">
+      <template slot="pagination">
         <pagination
           :total="total"
           :page-size="query.limit"
@@ -44,24 +48,29 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/user'
+import { achievementList } from '@/api/examination'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
+      query: {
+        examination_id: ''
+      },
       api: {
-        getList
-      }
+        getList: achievementList
+      },
+      mes: {}
     }
   },
   created() {
+    this.query.examination_id = this.$route.query.id
     this.getList()
   },
   methods: {
     afterGetList(data) {
-      this.list = data.data
-      this.total = data.total
+      this.list = data.list
+      this.mes = data.info
     }
   }
 }

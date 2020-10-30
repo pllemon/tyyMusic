@@ -9,7 +9,7 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出用户信息</el-button>
+        <el-button size="small" type="primary">导出报表</el-button>
       </template>
 
       <template>
@@ -22,13 +22,20 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="注册时间" prop="time" />
-          <el-table-column label="最后登录时间" prop="login_time" />
+          <el-table-column label="日期" fixed prop="ordersn" />
+          <el-table-column label="总单数" prop="pay_time" />
+          <el-table-column label="总收入" prop="" />
+          <el-table-column label="客单价" prop="signup_name" />
+          <el-table-column label="培训总单数" prop="phone" />
+          <el-table-column label="培训总收入" prop="" />
+          <el-table-column label="客单价" prop="" />
+          <el-table-column label="比赛总单数" prop="should_pay_money" />
+          <el-table-column label="比赛总收入" prop="should_pay_money" />
+          <el-table-column label="客单价" prop="should_pay_money" />
         </el-table>
       </template>
 
-      <template slot="page">
+      <template slot="pagination">
         <pagination
           :total="total"
           :page-size="query.limit"
@@ -44,25 +51,19 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/user'
+import { financelog } from '@/api/common'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
       api: {
-        getList
+        getList: financelog
       }
     }
   },
   created() {
     this.getList()
-  },
-  methods: {
-    afterGetList(data) {
-      this.list = data.data
-      this.total = data.total
-    }
   }
 }
 </script>

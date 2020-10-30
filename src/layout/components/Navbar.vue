@@ -4,8 +4,10 @@
       <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
       <p class="page-title">{{$route.meta.title}}</p>
     </div>
-
-    <el-button type="text" @click="back" v-show="$route.meta.inlinePage">返回</el-button>
+    <div>
+      <el-button type="text" @click="back" v-show="$route.meta.inlinePage"><i class="el-icon-back"></i>返回</el-button>
+      <el-button type="text" @click="refresh" ><i class="el-icon-refresh-left"></i>刷新</el-button>
+    </div>
   </div>
 </template>
 
@@ -28,6 +30,9 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    refresh() {
+      window.location.reload()
     }
   }
 }

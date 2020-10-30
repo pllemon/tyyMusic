@@ -39,7 +39,7 @@ module.exports = {
     },
     proxy: {
       '/admin': {
-        target: 'http://www.dsfjjwx.com:8081/',
+        target: 'https://music.eqask.com/',
         changeOrigin: true
       }
     },

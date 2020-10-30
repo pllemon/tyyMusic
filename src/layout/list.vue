@@ -18,9 +18,9 @@
             <div class="table">
                 <slot />
             </div>
-            <!-- <div class="pagination">
-                <slot name="pagination" />
-            </div> -->
+            <div class="pagination">
+                <slot name="page" />
+            </div>
         </div>
     </div>
 </template>

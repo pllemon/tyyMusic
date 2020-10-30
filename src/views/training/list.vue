@@ -38,6 +38,11 @@
           <el-table-column label="优惠价格" prop="age" />
           <el-table-column label="报名人数" prop="sumper" />
           <el-table-column label="已收费用" prop="summoney" />
+          <el-table-column label="课程状态" prop="status">
+            <template slot-scope="scope">
+              {{scope.row.status == 1 ? '开启报名' : '关闭报名'}}
+            </template>
+          </el-table-column>
           <el-table-column label="操作"  fixed="right" width="200">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.train_id)">查看报名</el-button>

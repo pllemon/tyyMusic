@@ -39,3 +39,27 @@ export function refundorder(data) {
     data
   })
 }
+
+export function financelog(params) {
+  return request({
+    url: '/admin/financelog',
+    method: 'get',
+    params
+  })
+}
+
+export function loglist(params) {
+  return request({
+    url: '/admin/loglist',
+    method: 'get',
+    params
+  })
+}
+
+export function shareLoglist(params) {
+  return request({
+    url: '/admin/shareloglist',
+    method: 'get',
+    params
+  })
+}

@@ -16,6 +16,14 @@ export function signUpList(params) {
   })
 }
 
+export function achievementList(params) {
+  return request({
+    url: '/admin/achievementlist',
+    method: 'get',
+    params
+  })
+}
+
 export function examinationinfo(params) {
   return request({
     url: '/admin/examinationinfo',

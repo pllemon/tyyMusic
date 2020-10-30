@@ -9,7 +9,7 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出用户信息</el-button>
+        <el-button size="small" type="primary">导出购买记录</el-button>
       </template>
 
       <template>
@@ -22,9 +22,10 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="联系方式" prop="phone" />
-          <el-table-column label="注册时间" prop="time" />
-          <el-table-column label="最后登录时间" prop="login_time" />
+          <el-table-column label="分享时间" prop="time" />
+          <el-table-column label="分享人" fixed prop="nickname" />
+          <el-table-column label="手机号码" prop="phone" />
+          <el-table-column label="分享内容" prop="desc" />
         </el-table>
       </template>
 
@@ -44,14 +45,14 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { getList } from '@/api/user'
+import { shareLoglist } from '@/api/common'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
       api: {
-        getList
+        getList: shareLoglist
       }
     }
   },
