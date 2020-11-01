@@ -1,4 +1,4 @@
-import { login } from '@/api/common'
+import { login, outlogin } from '@/api/common'
 import { getDetails } from '@/api/common'
 import { getToken, setToken, removeToken, setLoginStorage, removeLoginStorage, setAccountId, getAccountId, removeAccountId } from '@/utils/auth'
 
@@ -53,9 +53,15 @@ const actions = {
   // 用户退出
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      removeToken()
-      removeAccountId()
-      resolve()
+      outlogin({}).then(response => {
+        removeToken()
+        removeAccountId()
+        resolve()
+        resolve(data)
+      }).catch(error => {
+        console.log(error)
+        reject(error)
+      })
     })
   }
 }

@@ -140,8 +140,14 @@ export const constantRoutes = [
         path: 'all',
         name: 'all',
         component: () => import('@/views/income/all'),
-        meta: { title: '财务报表', icon: 'el-icon-data-analysis' }
+        meta: { title: '财务报表', icon: '' }
       },
+      {
+        path: 'refundOrderlist',
+        name: 'refundOrderlist',
+        component: () => import('@/views/income/refundOrderlist'),
+        meta: { title: '退款记录', icon: '' }
+      }
       // {
       //   path: 'training',
       //   name: 'training',

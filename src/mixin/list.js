@@ -37,7 +37,7 @@ export default {
             for (let i in this.query) {
               if (this.query[i] != '' && i != 'page' && i != 'limit') {
                $(this.$refs.exportForm).find('div').append(
-                 `<input type="text" name="${i}" value="${this.query[i]}"/>`
+                 `<input type="text" name="${i}" value="${this.query[i] || ''}"/>`
                ) 
               }
             }

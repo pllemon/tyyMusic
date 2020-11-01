@@ -10,10 +10,16 @@
 
       <template slot="action">
         <el-button size="small" type="primary" @click="setting()">新建比赛</el-button>
-        <el-button size="small" type="primary">导出比赛信息</el-button>
+        <el-button size="small" type="primary" @click="exportExcel()">导出比赛信息</el-button>
       </template>
 
       <template>
+        <!-- 导出 -->
+        <form ref="exportForm" action="/admin/examinationlist" method="get" style="display:none">
+          <input name="exportToExcel" value="1" />
+          <div></div>
+        </form>
+
         <el-table
           v-loading="loading"
           :data="list"
@@ -33,10 +39,11 @@
           <!-- <el-table-column label="比赛费用" prop="money" /> -->
           <el-table-column label="报名人数" prop="sumper" />
           <el-table-column label="已收费用" prop="summoney" />
-          <el-table-column label="操作"  fixed="right" width="250">
+          <el-table-column label="操作"  fixed="right" width="300">
             <template slot-scope="scope">
               <el-button type="text" @click="signRecord(scope.row.examination_id)">查看报名</el-button>
-              <el-button type="text" @click="upload(scope.row.examination_id)">查看成绩</el-button>
+              <el-button type="text" @click="upload(scope.row.examination_id)">导入成绩</el-button>
+              <el-button type="text" @click="achievement(scope.row.examination_id)">查看成绩</el-button>
               <el-button type="text" @click="setting(scope.row.examination_id)">配置比赛</el-button>
             </template>
           </el-table-column>
@@ -67,7 +74,7 @@ export default {
   mixins: [ListMixin],
   components: {
     SettingDialog,
-    UploadDialog
+    UploadDialog,
   },
   data() {
     return {

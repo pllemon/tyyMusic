@@ -24,7 +24,6 @@
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
           <el-table-column label="订单号" fixed prop="ordersn" />
           <el-table-column label="支付时间" prop="pay_time" />
-          <el-table-column label="付款人姓名" prop="" />
           <el-table-column label="报名人姓名" prop="signup_name" />
           <el-table-column label="联系信息" prop="phone" />
           <el-table-column label="课程名称" prop="" />

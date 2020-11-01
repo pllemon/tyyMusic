@@ -9,10 +9,16 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出用户信息</el-button>
+        <el-button size="small" type="primary" @click="exportExcel()">导出用户信息</el-button>
       </template>
 
       <template>
+        <!-- 导出 -->
+        <form ref="exportForm" action="/admin/userlist" method="get" style="display:none">
+          <input name="exportToExcel" value="1" />
+          <div></div>
+        </form>
+
         <el-table
           v-loading="loading"
           :data="list"

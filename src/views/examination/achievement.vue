@@ -9,7 +9,6 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出用户信息</el-button>
       </template>
 
       <template>
@@ -22,13 +21,13 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="考生姓名" prop="guardian" />
-          <el-table-column label="报考专业" prop="phone" />
-          <el-table-column label="报考级别" prop="birthday" />
-          <el-table-column label="考试科目" prop="peopleid" />
-          <el-table-column label="考试结果" prop="" />
-          <el-table-column label="身份证号" prop="" />
-          <el-table-column label="准考证号" prop="instructor" />
+          <el-table-column label="考生姓名" prop="name" />
+          <el-table-column label="报考专业" prop="major" />
+          <el-table-column label="报考级别" prop="level" />
+          <el-table-column label="考试科目" prop="subject" />
+          <el-table-column label="考试结果" prop="result" />
+          <el-table-column label="身份证号" prop="peopleid" />
+          <el-table-column label="准考证号" prop="ticket" />
         </el-table>
       </template>
 
@@ -66,12 +65,6 @@ export default {
   created() {
     this.query.examination_id = this.$route.query.id
     this.getList()
-  },
-  methods: {
-    afterGetList(data) {
-      this.list = data.list
-      this.mes = data.info
-    }
   }
 }
 </script>

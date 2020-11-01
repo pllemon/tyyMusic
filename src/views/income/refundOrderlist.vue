@@ -9,12 +9,12 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary" @click="exportExcel()">导出报表</el-button>
+        <el-button size="small" type="primary" @click="exportExcel()">导出退款记录</el-button>
       </template>
 
       <template>
         <!-- 导出 -->
-        <form ref="exportForm" action="/admin/financelog" method="get" style="display:none">
+        <form ref="exportForm" action="/admin/refundOrderlist" method="get" style="display:none">
           <input name="exportToExcel" value="1" />
           <div></div>
         </form>
@@ -28,16 +28,17 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="日期" fixed prop="date" />
-          <el-table-column label="总单数" prop="sumnumber" />
-          <el-table-column label="总收入" prop="summoney" />
-          <el-table-column label="客单价" prop="avgsummoney" />
-          <el-table-column label="培训总单数" prop="train_number" />
-          <el-table-column label="培训总收入" prop="train_summoney" />
-          <el-table-column label="客单价" prop="train_avgmoney" />
-          <el-table-column label="比赛总单数" prop="examination_number" />
-          <el-table-column label="比赛总收入" prop="examination_summoney" />
-          <el-table-column label="客单价" prop="examination_avgmoney" />
+          <el-table-column label="单号" fixed prop="ordersn" />
+          <el-table-column label="退款操作人" prop="refund_admin_name" />
+          <el-table-column label="退款时间" prop="refund_time" />
+          <el-table-column label="类型" prop="type">
+            <template slot-scope="scope">
+              {{scope.row.type == 1 ? '考级' : '培训'}}
+            </template>
+          </el-table-column>
+          <el-table-column label="退款名称" prop="body" />
+          <el-table-column label="退款金额" prop="refund_money" />
+          <el-table-column label="支付人手机号码" prop="phone" />
         </el-table>
       </template>
 
@@ -57,14 +58,14 @@
 
 <script>
 import ListMixin from '@/mixin/list'
-import { financelog } from '@/api/common'
+import { refundOrderlist } from '@/api/common'
 
 export default {
   mixins: [ListMixin],
   data() {
     return {
       api: {
-        getList: financelog
+        getList: refundOrderlist
       }
     }
   },

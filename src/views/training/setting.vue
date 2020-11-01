@@ -9,7 +9,17 @@
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="开展时间：" prop="activity_time">
-                        <el-input type="text" v-model="form.activity_time" placeholder="请输入" clearable />
+                        <el-date-picker
+                            style="width:100%"
+                            v-model="timeRange"
+                            type="datetimerange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            format="yyyy-MM-dd HH:mm"
+                            value-format="yyyy-MM-dd HH:mm"
+                            @change="changeTime"
+                        />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -85,11 +95,12 @@
                     <el-form-item label="封面图：" prop="banner_url">
                         <gd-upload
                             v-if="!loading"
-                            action='https://music.eqask.com/admin/uploadimg'
+                            action='http://music.eqask.com/admin/uploadimg'
                             type="train"
                             :file="file"  
                             @success="uploadSuccess"
                         />
+                        <p>图片尺寸为690*320</p>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -115,6 +126,7 @@ export default {
                 tutor: [{ required: true, message: '请输入', trigger: 'change' }],
                 money: [{ required: true, message: '请输入', trigger: 'change' }],
             },
+            timeRange: null,
             form: {
                 train_id: '',
                 title: '',
@@ -176,6 +188,14 @@ export default {
             this.form.banner_url = data
         },
 
+        changeTime() {
+            if (this.timeRange && this.timeRange.length == 2) {
+                this.form.activity_time = this.timeRange[0] + '至' + this.timeRange[1]
+            } else {
+                this.form.activity_time = ''
+            }
+        },
+
         getDetails() {
             let that = this
             that.loading = true
@@ -213,6 +233,9 @@ export default {
                     that.$set(that.file, 'url', this.$common.ip + data.info.banner_url)
                 } else {
                     that.$set(that.file, 'url', '')
+                }
+                if (that.form.activity_time) {
+                    that.timeRange = that.form.activity_time.split('至')
                 }
             }).finally(() => {
                 that.loading = false

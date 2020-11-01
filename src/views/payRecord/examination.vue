@@ -9,10 +9,16 @@
       </template>
 
       <template slot="action">
-        <el-button size="small" type="primary">导出购买记录</el-button>
+        <el-button size="small" type="primary" @click="exportExcel()">导出购买记录</el-button>
       </template>
 
       <template>
+        <!-- 导出 -->
+        <form ref="exportForm" action="/admin/examinationpaylog" method="get" style="display:none">
+          <input name="exportToExcel" value="1" />
+          <div></div>
+        </form>
+
         <el-table
           v-loading="loading"
           :data="list"
@@ -24,11 +30,10 @@
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
           <el-table-column label="订单号" fixed prop="ordersn" />
           <el-table-column label="支付时间" prop="pay_time" />
-          <el-table-column label="付款人姓名" prop="" />
           <el-table-column label="报名人姓名" prop="signup_name" />
           <el-table-column label="联系信息" prop="phone" />
-          <el-table-column label="比赛名称" prop="" />
-          <el-table-column label="组别" prop="" />
+          <el-table-column label="比赛名称" prop="title" />
+          <el-table-column label="组别" prop="group_name" />
           <el-table-column label="实际支付" prop="should_pay_money" />
           <el-table-column label="支付状态" prop="pay_status">
             <template slot-scope="scope">
@@ -42,7 +47,7 @@
           </el-table-column>
           <el-table-column label="操作"  fixed="right" width="100">
             <template slot-scope="scope">
-              <el-button type="text"  v-if="scope.row.pay_status == 1" @click="refund(scope.row.ordersn)">退款</el-button>
+              <el-button type="text"  v-if="scope.row.pay_status == 1 && scope.row.refund_status == 0" @click="refund(scope.row.ordersn)">退款</el-button>
             </template>
           </el-table-column>
         </el-table>

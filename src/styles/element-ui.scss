@@ -112,3 +112,8 @@
 .el-input-number__decrease, .el-input-number__increase{
   display: none !important;
 }
+
+.el-input.is-disabled .el-input__inner{
+  background: #fff;
+  color: #333;
+}

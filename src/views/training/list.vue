@@ -15,8 +15,8 @@
 
       <template>
         <!-- 导出 -->
-        <form ref="exportForm" action="/admin/craftsmanlist" method="post" style="display:none">
-          <input name="model" value="exportToExcel" />
+        <form ref="exportForm" action="/admin/trainlist" method="get" style="display:none">
+          <input name="exportToExcel" value="1" />
           <div></div>
         </form>
 

@@ -8,10 +8,6 @@
         </div>
       </template>
 
-      <template slot="action">
-        <el-button size="small" type="primary">导出购买记录</el-button>
-      </template>
-
       <template>
         <el-table
           v-loading="loading"

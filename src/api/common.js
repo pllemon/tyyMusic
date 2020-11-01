@@ -7,6 +7,13 @@ export function login(data) {
     data
   })
 }
+export function outlogin(params) {
+  return request({
+    url: '/admin/outlogin',
+    method: 'get',
+    params
+  })
+}
 
 export function getDetails(params) {
   return request({
@@ -59,6 +66,22 @@ export function loglist(params) {
 export function shareLoglist(params) {
   return request({
     url: '/admin/shareloglist',
+    method: 'get',
+    params
+  })
+}
+
+export function songlist(params) {
+  return request({
+    url: '/admin/songlist',
+    method: 'get',
+    params
+  })
+}
+
+export function refundOrderlist(params) {
+  return request({
+    url: '/admin/refundOrderlist',
     method: 'get',
     params
   })
