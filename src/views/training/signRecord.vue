@@ -31,6 +31,7 @@
           <el-table-column label="姓名" prop="signup_name" />
           <el-table-column label="身份证信息" prop="peopleid" />
           <el-table-column label="联系方式" prop="phone" />
+          <el-table-column label="机构" prop="mechanism" />
           <el-table-column label="原价格" prop="money" />
           <el-table-column label="购买类型" prop="type" />
           <el-table-column label="价格" prop="should_pay_money" />

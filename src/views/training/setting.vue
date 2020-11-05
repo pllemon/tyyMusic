@@ -42,6 +42,7 @@
                         <el-radio-group v-model="form.status">
                             <el-radio :label="1">开启报名</el-radio>
                             <el-radio :label="2">关闭报名</el-radio>
+                            <el-radio :label="3">删除课程</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
@@ -51,11 +52,10 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="优惠活动：">
-                      <el-checkbox-group v-model="activeType">
+                    <el-form-item label="优惠活动：" v-if="finish">
                         <div class="fx-cs">
-                            <!-- <el-checkbox label="age" style="margin-right: 10px">年龄</el-checkbox> -->
-                            <div>年龄：</div>
+                            <el-checkbox v-model="form.rule.age.status" :true-label="1" :false-label="0" style="margin-right: 10px">年龄：</el-checkbox>
+                            <!-- <div>年龄：</div> -->
                             <div class="fx-cs">
                                 <el-select v-model="form.rule.age.calculation" style="width:100px" placeholder="请选择">
                                 <el-option
@@ -71,8 +71,8 @@
                             </div>
                         </div>
                         <div class="fx-cs" style="margin: 10px 0">
-                            <!-- <el-checkbox label="number" style="margin-right: 10px">团购</el-checkbox> -->
-                            <div>团购：</div>
+                            <el-checkbox v-model="form.rule.number.status" :true-label="1" :false-label="0" style="margin-right: 10px">团购：</el-checkbox>
+                            <!-- <div>团购：</div> -->
                             <div class="fx-cs">
                                 <el-input-number style="width:140px;" v-model="form.rule.number.value" placeholder="请输入" :precision="0" />
                                 <span style="margin: 0 10px">人，优惠￥</span>
@@ -80,15 +80,13 @@
                             </div>
                         </div>
                         <div class="fx-cs">
-                            <!-- <el-checkbox label="time" style="margin-right: 10px">早鸟价</el-checkbox> -->
-                            <div>早鸟价：</div>
+                            <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">早鸟价：</el-checkbox>
                             <div class="fx-cs">
                                 <el-date-picker value-format="yyyy-MM-dd" style="width:140px" v-model="form.rule.time.value" type="date" placeholder="选择日期" />
                                 <span style="margin: 0 10px">前，优惠￥</span>
                                 <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
                             </div>
                         </div>
-                      </el-checkbox-group>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -98,6 +96,7 @@
                             action='http://music.eqask.com/admin/uploadimg'
                             type="train"
                             :file="file"  
+                             width="345" height="160"
                             @success="uploadSuccess"
                         />
                         <p>图片尺寸为690*320</p>
@@ -143,21 +142,24 @@ export default {
                         calculation: '',
                         value: undefined,
                         discount_money: undefined,
-                        rule_type: 'age'
+                        rule_type: 'age',
+                        status: 0
                     },
                     time: {
                         id: '',
                         calculation: '',
                         value: '',
                         discount_money: undefined,
-                        rule_type: 'time'
+                        rule_type: 'time',
+                        status: 0
                     },
                     number: {
                         id: '',
                         calculation: '',
                         value: undefined,
                         discount_money: undefined,
-                        rule_type: 'number'
+                        rule_type: 'number',
+                        status: 0
                     }
                 }
             },
@@ -172,7 +174,8 @@ export default {
             },{
               value: '<',
               label: '小于'
-            }]
+            }],
+            finish: false
         }
     },
     created() {
@@ -181,6 +184,7 @@ export default {
             this.getDetails()
         } else {
             this.loading = false
+            this.finish = true
         }
     },
     methods: {
@@ -211,21 +215,24 @@ export default {
                         calculation: rule.age.rule.calculation,
                         value: rule.age.rule.value,
                         discount_money: rule.age.discount_money,
-                        rule_type: 'age'
+                        rule_type: 'age',
+                        status: rule.age.status
                     },
                     time: {
                         id: rule.time.id,
                         calculation: rule.time.rule.calculation,
                         value: rule.time.rule.value,
                         discount_money: rule.time.discount_money,
-                        rule_type: 'time'
+                        rule_type: 'time',
+                        status: rule.time.status
                     },
                     number: {
                         id: rule.number.id,
                         calculation: rule.number.rule.calculation,
                         value: rule.number.rule.value,
                         discount_money: rule.number.discount_money,
-                        rule_type: 'number'
+                        rule_type: 'number',
+                        status: rule.number.status
                     }
                 }
                 that.form = formObj
@@ -237,6 +244,8 @@ export default {
                 if (that.form.activity_time) {
                     that.timeRange = that.form.activity_time.split('至')
                 }
+
+                that.finish = true
             }).finally(() => {
                 that.loading = false
             })

@@ -40,7 +40,9 @@
           <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="课程状态" prop="status">
             <template slot-scope="scope">
-              {{scope.row.status == 1 ? '开启报名' : '关闭报名'}}
+              <span v-if="scope.row.status == 1">开启报名</span>
+              <span v-if="scope.row.status == 2">关闭报名</span>
+              <span v-if="scope.row.status == 3">删除课程</span>
             </template>
           </el-table-column>
           <el-table-column label="操作"  fixed="right" width="200">

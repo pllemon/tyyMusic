@@ -33,6 +33,7 @@
                         <el-radio-group v-model="form.status">
                             <el-radio :label="1">开启报名</el-radio>
                             <el-radio :label="2">关闭报名</el-radio>
+                            <el-radio :label="3">删除比赛</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
@@ -70,6 +71,7 @@
                             action='http://music.eqask.com/admin/uploadimg'
                             type="examination"
                             :file="file"  
+                             width="345" height="160"
                             @success="uploadSuccess"
                         />
                         <p>图片尺寸为690*320</p>

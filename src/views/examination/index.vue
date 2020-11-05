@@ -33,7 +33,9 @@
           <el-table-column label="开展时间" prop="activity_time" />
           <el-table-column label="比赛状态" prop="status">
             <template slot-scope="scope">
-              {{scope.row.status == 1 ? '开启报名' : '关闭报名'}}
+              <span v-if="scope.row.status == 1">开启报名</span>
+              <span v-if="scope.row.status == 2">关闭报名</span>
+              <span v-if="scope.row.status == 3">删除比赛</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="比赛费用" prop="money" /> -->

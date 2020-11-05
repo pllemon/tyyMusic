@@ -37,7 +37,7 @@
           <el-table-column label="联系方式" prop="instructor_phone" />
           <el-table-column label="操作" prop="action" width="200">
             <template slot-scope="scope">
-              <el-button type="text" @click="viewMusic(scope.row.examination_id)">查看曲目</el-button>
+              <el-button type="text" @click="viewMusic(scope.row.id)">查看曲目</el-button>
             </template>
           </el-table-column>
         </el-table>
