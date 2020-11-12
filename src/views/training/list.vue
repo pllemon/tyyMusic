@@ -29,7 +29,7 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="课程名称" fixed prop="title" />
+          <el-table-column label="课程名称" fixed prop="title" width="200"/>
           <el-table-column label="开展时间" prop="activity_time" />
           <el-table-column label="教授老师" prop="tutor" />
           <el-table-column label="原价格" prop="money" />

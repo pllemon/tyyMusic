@@ -1,106 +1,143 @@
 <template>
-    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="700px">
-        <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="100px" :validate-on-rule-change="false">
-            <el-row>
-                <el-col :span="24">
-                    <el-form-item label="课程名称：" prop="title">
-                        <el-input type="text" v-model="form.title" placeholder="请输入" clearable />
-                    </el-form-item>
+    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="1200px">
+        <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="130px" :validate-on-rule-change="false">
+            <el-row :gutter="20">
+                <el-col :span="10">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="课程名称：" prop="title">
+                                <el-input type="text" v-model="form.title" placeholder="请输入" clearable />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="开展时间：" prop="activity_time">
+                                <el-date-picker
+                                    style="width:100%"
+                                    v-model="timeRange"
+                                    type="datetimerange"
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    format="yyyy-MM-dd HH:mm"
+                                    value-format="yyyy-MM-dd HH:mm"
+                                    @change="changeTime"
+                                />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="教授老师：" prop="tutor">
+                                <el-input type="text" v-model="form.tutor" placeholder="请输入" clearable />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="原价：" prop="money">
+                                <el-input-number style="width:100%" v-model="form.money" placeholder="请输入" :precision="2" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="排序：" prop="orders">
+                                <el-input type="text" v-model="form.orders" placeholder="请输入" clearable />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="课程状态：" prop="status">
+                                <el-radio-group v-model="form.status">
+                                    <el-radio :label="1">开启报名</el-radio>
+                                    <el-radio :label="2">关闭报名</el-radio>
+                                    <el-radio :label="3">删除课程</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="描述：" prop="desc">
+                                <el-input type="textarea" :rows="4" v-model="form.desc" placeholder="请输入" clearable />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="封面图：" prop="banner_url">
+                                <gd-upload
+                                    v-if="!loading"
+                                    action='http://music.eqask.com/admin/uploadimg'
+                                    type="train"
+                                    :file="file"  
+                                    :width="345"
+                                    :height="160"
+                                    @success="uploadSuccess"
+                                />
+                                <p>图片尺寸为690*320</p>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-col>
-                <el-col :span="24">
-                    <el-form-item label="开展时间：" prop="activity_time">
-                        <el-date-picker
-                            style="width:100%"
-                            v-model="timeRange"
-                            type="datetimerange"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            format="yyyy-MM-dd HH:mm"
-                            value-format="yyyy-MM-dd HH:mm"
-                            @change="changeTime"
-                        />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="教授老师：" prop="tutor">
-                        <el-input type="text" v-model="form.tutor" placeholder="请输入" clearable />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="原价：" prop="money">
-                        <el-input-number style="width:100%" v-model="form.money" placeholder="请输入" :precision="2" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="排序：" prop="orders">
-                        <el-input type="text" v-model="form.orders" placeholder="请输入" clearable />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="课程状态：" prop="status">
-                        <el-radio-group v-model="form.status">
-                            <el-radio :label="1">开启报名</el-radio>
-                            <el-radio :label="2">关闭报名</el-radio>
-                            <el-radio :label="3">删除课程</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="描述：" prop="desc">
-                        <el-input type="textarea" :rows="4" v-model="form.desc" placeholder="请输入" clearable />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="优惠活动：" v-if="finish">
-                        <div class="fx-cs">
-                            <el-checkbox v-model="form.rule.age.status" :true-label="1" :false-label="0" style="margin-right: 10px">年龄：</el-checkbox>
-                            <!-- <div>年龄：</div> -->
-                            <div class="fx-cs">
-                                <el-select v-model="form.rule.age.calculation" style="width:100px" placeholder="请选择">
-                                <el-option
-                                    v-for="item in ageOptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                </el-option>
-                                </el-select>
-                                <el-input-number style="width:100px;margin-left:10px" v-model="form.rule.age.value" placeholder="请输入" :precision="0" />
-                                <span style="margin: 0 10px">岁，优惠￥</span>
-                                <el-input-number style="width:100px" v-model="form.rule.age.discount_money" placeholder="请输入" :precision="2" />
-                            </div>
-                        </div>
-                        <div class="fx-cs" style="margin: 10px 0">
-                            <el-checkbox v-model="form.rule.number.status" :true-label="1" :false-label="0" style="margin-right: 10px">团购：</el-checkbox>
-                            <!-- <div>团购：</div> -->
-                            <div class="fx-cs">
-                                <el-input-number style="width:140px;" v-model="form.rule.number.value" placeholder="请输入" :precision="0" />
-                                <span style="margin: 0 10px">人，优惠￥</span>
-                                <el-input-number style="width:100px" v-model="form.rule.number.discount_money" placeholder="请输入" :precision="2" />
-                            </div>
-                        </div>
-                        <div class="fx-cs">
-                            <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">早鸟价：</el-checkbox>
-                            <div class="fx-cs">
-                                <el-date-picker value-format="yyyy-MM-dd" style="width:140px" v-model="form.rule.time.value" type="date" placeholder="选择日期" />
-                                <span style="margin: 0 10px">前，优惠￥</span>
-                                <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
-                            </div>
-                        </div>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item label="封面图：" prop="banner_url">
-                        <gd-upload
-                            v-if="!loading"
-                            action='http://music.eqask.com/admin/uploadimg'
-                            type="train"
-                            :file="file"  
-                             width="345" height="160"
-                            @success="uploadSuccess"
-                        />
-                        <p>图片尺寸为690*320</p>
-                    </el-form-item>
+                <el-col :span="14">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="优惠活动：" v-if="finish">
+                                <div class="fx-cs">
+                                    <el-checkbox v-model="form.rule.age.status" :true-label="1" :false-label="0" style="margin-right: 10px">年龄：</el-checkbox>
+                                    <!-- <div>年龄：</div> -->
+                                    <div class="fx-cs">
+                                        <el-select v-model="form.rule.age.calculation" style="width:100px" placeholder="请选择">
+                                        <el-option
+                                            v-for="item in ageOptions"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                        </el-select>
+                                        <el-input-number style="width:100px;margin-left:10px" v-model="form.rule.age.value" placeholder="请输入" :precision="0" />
+                                        <span style="margin: 0 10px">岁，优惠￥</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.age.discount_money" placeholder="请输入" :precision="2" />
+                                    </div>
+                                </div>
+                                <div class="fx-cs" style="margin: 10px 0">
+                                    <el-checkbox v-model="form.rule.number.status" :true-label="1" :false-label="0" style="margin-right: 10px">团购：</el-checkbox>
+                                    <!-- <div>团购：</div> -->
+                                    <div class="fx-cs">
+                                        <el-input-number style="width:140px;" v-model="form.rule.number.value" placeholder="请输入" :precision="0" />
+                                        <span style="margin: 0 10px">人，优惠￥</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.number.discount_money" placeholder="请输入" :precision="2" />
+                                    </div>
+                                </div>
+                                <div class="fx-cs">
+                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">早鸟价：</el-checkbox>
+                                    <div class="fx-cs">
+                                        <el-date-picker value-format="yyyy-MM-dd" style="width:140px" v-model="form.rule.time.value" type="date" placeholder="选择日期" />
+                                        <span style="margin: 0 10px">前，优惠￥</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
+                                    </div>
+                                </div>
+                                <div class="fx-cs">
+                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">会员优惠：</el-checkbox>
+                                    <div class="fx-cs">
+                                        <span>认证会员可享受对应优惠</span>
+                                    </div>
+                                </div>
+                                <div class="fx-cs">
+                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">前N名优惠：</el-checkbox>
+                                    <div class="fx-cs">
+                                        <span style="margin: 0 10px">前</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
+                                        <span style="margin: 0 10px">名，优惠￥</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
+                                    </div>
+                                </div>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="后台配置内容：">
+                                <el-button @click="addText" type="success" plain icon="el-icon-plus" size="mini">添加</el-button>
+                                <div v-for="(item, index) in form.textList" :key="index" style="margin-top:8px;">
+                                    <el-input type="text" style="width:240px;margin-right:10px" v-model="item.name" placeholder="请输入字段名称"/>
+                                    <el-select v-model="item.required" style="width:100px;margin-right:10px">
+                                        <el-option :key="0" label="非必填" :value="0" />
+                                        <el-option :key="1" label="必填" :value="1" />
+                                    </el-select>
+                                    <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button>
+                                </div>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-col>
             </el-row>
         </el-form>
@@ -161,7 +198,8 @@ export default {
                         rule_type: 'number',
                         status: 0
                     }
-                }
+                },
+                textList: []
             },
             file: {},
             api: {
@@ -187,7 +225,17 @@ export default {
             this.finish = true
         }
     },
-    methods: {
+    methods: { 
+        addText() {
+            this.form.textList.push({
+                name: '',
+                required: 0
+            })
+        },
+        delText(idx) {
+            this.form.textList.splice(idx, 1)
+        },
+
         uploadSuccess(data) {
             this.form.banner_url = data
         },

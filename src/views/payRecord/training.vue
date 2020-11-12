@@ -32,7 +32,7 @@
           <el-table-column label="支付时间" prop="pay_time" />
           <el-table-column label="报名人姓名" prop="signup_name" />
           <el-table-column label="联系信息" prop="phone" />
-          <el-table-column label="课程名称" prop="title" />
+          <el-table-column label="课程名称" prop="title" width="200"/>
           <el-table-column label="原价格" prop="money" />
           <el-table-column label="实际支付" prop="should_pay_money" />
           <el-table-column label="支付状态" prop="pay_status">

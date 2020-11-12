@@ -29,7 +29,7 @@
           highlight-current-row
         >
           <el-table-column align="center" fixed label="序号" type="index" width="50"/>
-          <el-table-column label="比赛名称" prop="title" />
+          <el-table-column label="比赛名称" prop="title" width="200"/>
           <el-table-column label="开展时间" prop="activity_time" />
           <el-table-column label="比赛状态" prop="status">
             <template slot-scope="scope">

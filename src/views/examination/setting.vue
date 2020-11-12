@@ -71,7 +71,8 @@
                             action='http://music.eqask.com/admin/uploadimg'
                             type="examination"
                             :file="file"  
-                             width="345" height="160"
+                            :width="345"
+                            :height="160"
                             @success="uploadSuccess"
                         />
                         <p>图片尺寸为690*320</p>
