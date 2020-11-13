@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="1200px">
+    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="1400px">
         <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="130px" :validate-on-rule-change="false">
             <el-row :gutter="20">
                 <el-col :span="10">
@@ -35,6 +35,11 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="24">
+                            <el-form-item label="报名人数：" prop="signupnum">
+                                <el-input-number style="width:100%" v-model="form.signupnum" placeholder="请输入" :precision="2" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
                             <el-form-item label="排序：" prop="orders">
                                 <el-input type="text" v-model="form.orders" placeholder="请输入" clearable />
                             </el-form-item>
@@ -57,7 +62,7 @@
                             <el-form-item label="封面图：" prop="banner_url">
                                 <gd-upload
                                     v-if="!loading"
-                                    action='http://music.eqask.com/admin/uploadimg'
+                                    action='http://120.25.25.90:8082/admin/uploadimg'
                                     type="train"
                                     :file="file"  
                                     :width="345"
@@ -74,16 +79,19 @@
                         <el-col :span="24">
                             <el-form-item label="优惠活动：" v-if="finish">
                                 <div class="fx-cs">
-                                    <el-checkbox v-model="form.rule.age.status" :true-label="1" :false-label="0" style="margin-right: 10px">年龄：</el-checkbox>
-                                    <!-- <div>年龄：</div> -->
+                                    <el-checkbox v-model="form.rule.age.status" :true-label="1" :false-label="0" style="margin-right: 10px">年龄优惠：</el-checkbox>
+                                    <el-select v-model="form.rule.age.only" style="width:100px;margin-right: 10px" placeholder="请选择">
+                                        <el-option :key="0" label="不独立" :value="0" />
+                                        <el-option :key="1" label="独立" :value="1" />
+                                    </el-select>
                                     <div class="fx-cs">
                                         <el-select v-model="form.rule.age.calculation" style="width:100px" placeholder="请选择">
-                                        <el-option
-                                            v-for="item in ageOptions"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                        </el-option>
+                                            <el-option
+                                                v-for="item in ageOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                            </el-option>
                                         </el-select>
                                         <el-input-number style="width:100px;margin-left:10px" v-model="form.rule.age.value" placeholder="请输入" :precision="0" />
                                         <span style="margin: 0 10px">岁，优惠￥</span>
@@ -91,35 +99,37 @@
                                     </div>
                                 </div>
                                 <div class="fx-cs" style="margin: 10px 0">
-                                    <el-checkbox v-model="form.rule.number.status" :true-label="1" :false-label="0" style="margin-right: 10px">团购：</el-checkbox>
-                                    <!-- <div>团购：</div> -->
+                                    <el-checkbox v-model="form.rule.number.status" :true-label="1" :false-label="0" style="margin-right: 10px">团购优惠：</el-checkbox>
+                                    <el-select v-model="form.rule.number.only" style="width:100px;margin-right:10px" placeholder="请选择">
+                                        <el-option :key="0" label="不独立" :value="0" />
+                                        <el-option :key="1" label="独立" :value="1" />
+                                    </el-select>
                                     <div class="fx-cs">
                                         <el-input-number style="width:140px;" v-model="form.rule.number.value" placeholder="请输入" :precision="0" />
                                         <span style="margin: 0 10px">人，优惠￥</span>
                                         <el-input-number style="width:100px" v-model="form.rule.number.discount_money" placeholder="请输入" :precision="2" />
                                     </div>
                                 </div>
-                                <div class="fx-cs">
-                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">早鸟价：</el-checkbox>
+                                <div class="fx-cs" style="margin: 10px 0">
+                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">早鸟优惠：</el-checkbox>
+                                    <el-select v-model="form.rule.time.only" style="width:100px;margin-right:10px" placeholder="请选择">
+                                        <el-option :key="0" label="不独立" :value="0" />
+                                        <el-option :key="1" label="独立" :value="1" />
+                                    </el-select>
                                     <div class="fx-cs">
                                         <el-date-picker value-format="yyyy-MM-dd" style="width:140px" v-model="form.rule.time.value" type="date" placeholder="选择日期" />
                                         <span style="margin: 0 10px">前，优惠￥</span>
                                         <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
                                     </div>
                                 </div>
-                                <div class="fx-cs">
-                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">会员优惠：</el-checkbox>
+                                <div class="fx-cs" style="margin: 10px 0">
+                                    <el-checkbox v-model="form.rule.vip.status" :true-label="1" :false-label="0" style="margin-right: 10px">会员优惠：</el-checkbox>
+                                    <el-select v-model="form.rule.vip.only" style="width:100px;margin-right:10px" placeholder="请选择">
+                                        <el-option :key="0" label="不独立" :value="0" />
+                                        <el-option :key="1" label="独立" :value="1" />
+                                    </el-select>
                                     <div class="fx-cs">
                                         <span>认证会员可享受对应优惠</span>
-                                    </div>
-                                </div>
-                                <div class="fx-cs">
-                                    <el-checkbox v-model="form.rule.time.status" :true-label="1" :false-label="0" style="margin-right: 10px">前N名优惠：</el-checkbox>
-                                    <div class="fx-cs">
-                                        <span style="margin: 0 10px">前</span>
-                                        <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
-                                        <span style="margin: 0 10px">名，优惠￥</span>
-                                        <el-input-number style="width:100px" v-model="form.rule.time.discount_money" placeholder="请输入" :precision="2" />
                                     </div>
                                 </div>
                             </el-form-item>
@@ -127,13 +137,10 @@
                         <el-col :span="24">
                             <el-form-item label="后台配置内容：">
                                 <el-button @click="addText" type="success" plain icon="el-icon-plus" size="mini">添加</el-button>
-                                <div v-for="(item, index) in form.textList" :key="index" style="margin-top:8px;">
-                                    <el-input type="text" style="width:240px;margin-right:10px" v-model="item.name" placeholder="请输入字段名称"/>
-                                    <el-select v-model="item.required" style="width:100px;margin-right:10px">
-                                        <el-option :key="0" label="非必填" :value="0" />
-                                        <el-option :key="1" label="必填" :value="1" />
-                                    </el-select>
-                                    <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button>
+                                <div v-for="(item, index) in form.fields" :key="index" style="margin-top:8px;">
+                                    <el-checkbox v-model="item.status" :true-label="1" :false-label="0" style="margin-right: 10px"></el-checkbox>
+                                    <el-input type="text" style="width:240px;margin-right:10px" v-model="item.title" placeholder="请输入字段名称"/>
+                                    <!-- <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button> -->
                                 </div>
                             </el-form-item>
                         </el-col>
@@ -173,6 +180,7 @@ export default {
                 orders: '',
                 desc: '',
                 status: 1,
+                signupnum: undefined,
                 rule: {
                     age: {
                         id: '',
@@ -180,7 +188,8 @@ export default {
                         value: undefined,
                         discount_money: undefined,
                         rule_type: 'age',
-                        status: 0
+                        status: 0,
+                        only: 0
                     },
                     time: {
                         id: '',
@@ -188,7 +197,8 @@ export default {
                         value: '',
                         discount_money: undefined,
                         rule_type: 'time',
-                        status: 0
+                        status: 0,
+                        only: 0
                     },
                     number: {
                         id: '',
@@ -196,10 +206,20 @@ export default {
                         value: undefined,
                         discount_money: undefined,
                         rule_type: 'number',
-                        status: 0
+                        status: 0,
+                        only: 0
+                    },
+                    vip: {
+                        id: '',
+                        calculation: '',
+                        value: undefined,
+                        discount_money: undefined,
+                        rule_type: 'vip',
+                        status: 0,
+                        only: 0
                     }
                 },
-                textList: []
+                fields: []
             },
             file: {},
             api: {
@@ -227,13 +247,13 @@ export default {
     },
     methods: { 
         addText() {
-            this.form.textList.push({
-                name: '',
-                required: 0
+            this.form.fields.push({
+                title: '',
+                status: 0
             })
         },
         delText(idx) {
-            this.form.textList.splice(idx, 1)
+            this.form.fields.splice(idx, 1)
         },
 
         uploadSuccess(data) {
