@@ -1,8 +1,8 @@
 <template>
-    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="1400px">
+    <el-dialog title="配置活动" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="800px">
         <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="130px" :validate-on-rule-change="false">
             <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :span="24">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="课程名称：" prop="title">
@@ -36,7 +36,7 @@
                         </el-col>
                         <el-col :span="24">
                             <el-form-item label="报名人数：" prop="signupnum">
-                                <el-input-number style="width:100%" v-model="form.signupnum" placeholder="请输入" :precision="2" />
+                                <el-input-number style="width:100%" v-model="form.signupnum" placeholder="请输入" :precision="0" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="24">
@@ -74,7 +74,7 @@
                         </el-col>
                     </el-row>
                 </el-col>
-                <el-col :span="14">
+                <el-col :span="24">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="优惠活动：" v-if="finish">
@@ -129,7 +129,8 @@
                                         <el-option :key="1" label="独立" :value="1" />
                                     </el-select>
                                     <div class="fx-cs">
-                                        <span>认证会员可享受对应优惠</span>
+                                        <span style="margin: 0 10px">认证会员可享受优惠￥</span>
+                                        <el-input-number style="width:100px" v-model="form.rule.vip.discount_money" placeholder="请输入" :precision="2" />
                                     </div>
                                 </div>
                             </el-form-item>
@@ -140,7 +141,7 @@
                                 <div v-for="(item, index) in form.fields" :key="index" style="margin-top:8px;">
                                     <el-checkbox v-model="item.status" :true-label="1" :false-label="0" style="margin-right: 10px"></el-checkbox>
                                     <el-input type="text" style="width:240px;margin-right:10px" v-model="item.title" placeholder="请输入字段名称"/>
-                                    <!-- <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button> -->
+                                    <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button>
                                 </div>
                             </el-form-item>
                         </el-col>
@@ -249,7 +250,7 @@ export default {
         addText() {
             this.form.fields.push({
                 title: '',
-                status: 0
+                status: 1
             })
         },
         delText(idx) {
@@ -276,6 +277,7 @@ export default {
             }).then(response => {
                 const { data } = response
                 let formObj = Object.assign(that.form, data.info)
+                formObj.fields = data.fields
                 let rule = data.rule
                 formObj.rule = {
                     age: {
@@ -284,7 +286,8 @@ export default {
                         value: rule.age.rule.value,
                         discount_money: rule.age.discount_money,
                         rule_type: 'age',
-                        status: rule.age.status
+                        status: rule.age.status,
+                        only: rule.age.rule.only
                     },
                     time: {
                         id: rule.time.id,
@@ -292,7 +295,8 @@ export default {
                         value: rule.time.rule.value,
                         discount_money: rule.time.discount_money,
                         rule_type: 'time',
-                        status: rule.time.status
+                        status: rule.time.status,
+                        only: rule.time.rule.only
                     },
                     number: {
                         id: rule.number.id,
@@ -300,7 +304,17 @@ export default {
                         value: rule.number.rule.value,
                         discount_money: rule.number.discount_money,
                         rule_type: 'number',
-                        status: rule.number.status
+                        status: rule.number.status,
+                        only: rule.number.rule.only
+                    },
+                    vip: {
+                        id: rule.vip.id,
+                        calculation: rule.vip.rule.calculation,
+                        value: rule.vip.rule.value,
+                        discount_money: rule.vip.discount_money,
+                        rule_type: 'vip',
+                        status: rule.vip.status,
+                        only: rule.vip.rule.only
                     }
                 }
                 that.form = formObj
@@ -316,6 +330,7 @@ export default {
                 that.finish = true
             }).finally(() => {
                 that.loading = false
+                that.finish = true
             })
         }
     }

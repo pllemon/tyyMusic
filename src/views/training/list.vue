@@ -33,9 +33,10 @@
           <el-table-column label="开展时间" prop="activity_time" />
           <el-table-column label="教授老师" prop="tutor" />
           <el-table-column label="原价格" prop="money" />
-          <el-table-column label="早鸟价格" prop="time" />
-          <el-table-column label="团购价格" prop="number" />
-          <el-table-column label="优惠价格" prop="age" />
+          <el-table-column label="早鸟优惠" prop="time" />
+          <el-table-column label="团购优惠" prop="number" />
+          <el-table-column label="年龄优惠" prop="age" />
+          <el-table-column label="会员优惠" prop="vip" />
           <el-table-column label="报名人数" prop="sumper" />
           <el-table-column label="已收费用" prop="summoney" />
           <el-table-column label="课程状态" prop="status">

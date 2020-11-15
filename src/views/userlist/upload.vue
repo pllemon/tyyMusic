@@ -6,8 +6,8 @@
                 class="upload-demo"
                 drag
                 :limit="1"
-                action="http://120.25.25.90:8082/admin/exprotachievement"
-                :data="{examination_id:examination_id}"
+                action="http://120.25.25.90:8082/admin/exprotVipUser"
+                :data="{}"
                 :multiple="false"
                 :before-upload="beforeUpload"
                 :on-success="handleSuccess"
@@ -31,12 +31,10 @@ export default {
     mixins: [UpdateMixin],
     data() {
         return {
-           examination_id: '',
            loading: false
         }
     },
     created() {
-        this.examination_id = this.mes.id
     },
     methods: {
         beforeUpload(file) {

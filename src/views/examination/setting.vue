@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="配置比赛" :visible="true" :before-close="close"  :modal-append-to-body='false' :close-on-click-modal="false" width="700px">
-        <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="100px" :validate-on-rule-change="false">
+        <el-form v-loading="loading" ref="ruleForm" size="small" :model="form" :rules="rules" label-width="120px" :validate-on-rule-change="false">
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="比赛名称：" prop="title">
@@ -21,6 +21,11 @@
                             value-format="yyyy-MM-dd HH:mm"
                             @change="changeTime"
                         />
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="报名人数：" prop="signupnum">
+                        <el-input-number style="width:100%" v-model="form.signupnum" placeholder="请输入" :precision="0" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
@@ -78,6 +83,16 @@
                         <p>图片尺寸为690*320</p>
                     </el-form-item>
                 </el-col>
+                <el-col :span="24">
+                    <el-form-item label="后台配置内容：">
+                        <el-button @click="addText" type="success" plain icon="el-icon-plus" size="mini">添加</el-button>
+                        <div v-for="(item, index) in form.fields" :key="index" style="margin-top:8px;">
+                            <el-checkbox v-model="item.status" :true-label="1" :false-label="0" style="margin-right: 10px"></el-checkbox>
+                            <el-input type="text" style="width:240px;margin-right:10px" v-model="item.title" placeholder="请输入字段名称"/>
+                            <el-button @click="delText(index)" type="danger" plain icon="el-icon-minus" size="mini">删除</el-button>
+                        </div>
+                    </el-form-item>
+                </el-col>
             </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer" v-show="!loading">
@@ -107,11 +122,13 @@ export default {
                 activity_time: '',
                 orders: '',
                 desc: '',
+                signupnum: undefined,
                 status: 1,
                 group: [{
                     group_name: '',
                     money: undefined
-                }]
+                }],
+                fields: []
             },
             file: {},
             api: {
@@ -131,6 +148,16 @@ export default {
         }
     },
     methods: {
+        addText() {
+            this.form.fields.push({
+                title: '',
+                status: 1
+            })
+        },
+        delText(idx) {
+            this.form.fields.splice(idx, 1)
+        },
+
         uploadSuccess(data) {
             this.form.banner_url = data
         },
@@ -152,6 +179,7 @@ export default {
             }).then(response => {
                 const { data } = response
                 let formObj = Object.assign(that.form, data.info)
+                formObj.fields = data.fields
                 if (data.group && data.group.length) {
                     formObj.group = data.group
                 } else {

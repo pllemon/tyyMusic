@@ -42,13 +42,15 @@
           </el-table-column>
           <el-table-column label="退款状态" prop="refund_status">
             <template slot-scope="scope">
-              {{scope.row.refund_status == 1 ? '已退款' : '未退款'}}
+              {{scope.row.refund_status == 0 ? '未退款' : ''}}
+              {{scope.row.refund_status == 1 ? '已退款' : ''}}
+              {{scope.row.refund_status == 2 ? '已退部分' : ''}}
             </template>
           </el-table-column>
           <el-table-column label="优惠情况" prop="discount_type" />
           <el-table-column label="操作"  fixed="right" width="100">
             <template slot-scope="scope">
-              <el-button type="text" v-if="scope.row.pay_status == 1 && scope.row.refund_status == 0" @click="refund(scope.row.ordersn)">退款</el-button>
+              <el-button type="text" v-if="scope.row.pay_status == 1 && scope.row.refund_status != 1" @click="refund(scope.row)">退款</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -71,9 +73,13 @@
 <script>
 import ListMixin from '@/mixin/list'
 import { trainlistpaylog, refundorder } from '@/api/common'
+import refundDialog from '@/views/payRecord/refund'
 
 export default {
   mixins: [ListMixin],
+  components: {
+    refundDialog
+  },
   data() {
     return {
       api: {
@@ -85,7 +91,11 @@ export default {
     this.getList()
   },
   methods: {
-    refund(id) {
+    refund(row) {
+
+      this.loadComponent('refundDialog', row)
+      return false
+
       this.$confirm('确定退款?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

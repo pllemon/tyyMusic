@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function setvipuser(data) {
+  return request({
+    url: '/admin/setvipuser',
+    method: 'post',
+    data
+  })
+}

@@ -86,3 +86,11 @@ export function refundOrderlist(params) {
     params
   })
 }
+
+export function orderPayInfo(params) {
+  return request({
+    url: '/admin/orderPayInfo',
+    method: 'get',
+    params
+  })
+}
