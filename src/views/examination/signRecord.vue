@@ -32,6 +32,7 @@
           <el-table-column label="联系方式" prop="phone" />
           <el-table-column label="出生年月日" prop="birthday" />
           <el-table-column label="身份证号码" prop="peopleid" />
+          <el-table-column label="其他证件" prop="orderid" />
           <el-table-column label="参数组别" prop="group_name" />
           <el-table-column label="指导老师" prop="instructor" />
           <el-table-column label="联系方式" prop="instructor_phone" />

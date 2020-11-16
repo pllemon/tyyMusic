@@ -29,7 +29,7 @@
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="本次退款金额：" prop="refund_fee">
-                        <el-input-number style="width:100%" v-model="form.refund_fee" placeholder="请输入" :max="info.pay_money-info.refund_money" :precision="2" />
+                        <el-input-number style="width:100%" v-model="form.refund_fee" placeholder="请输入" :precision="2" />
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -54,7 +54,7 @@ export default {
             },
             form: {
                 ordersn: '',
-                refund_fee: '',
+                refund_fee: undefined,
 
             },
             api: {
