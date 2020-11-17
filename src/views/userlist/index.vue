@@ -4,6 +4,10 @@
       <template slot="search">
         <div class="fx-cs">
           <el-input size="small" v-model="query.keyword" clearable style="width:300px" tpye="text" placeholder="请输入关键字进行搜索" />
+          <el-select v-model="query.is_vip" size="small" @change="search" style="width:100px;margin-left:10px" clearfix placeholder="是否vip" clearable>
+            <el-option label="vip" :value="1" />
+            <el-option label="非vip" :value="0" />
+          </el-select>
           <el-button size="small" @click="search">搜索</el-button>
         </div>
       </template>
@@ -75,6 +79,10 @@ export default {
   },
   data() {
     return {
+      query: {
+        keyword: '',
+        is_vip: ''
+      },
       api: {
         getList
       }
