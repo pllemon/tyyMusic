@@ -73,7 +73,7 @@
                     <el-form-item label="封面图：" prop="banner_url">
                         <gd-upload
                             v-if="finish"
-                            action='http://120.25.25.90:8082/admin/uploadimg'
+                            action='http://music.eqask.com/admin/uploadimg'
                             type="examination"
                             :file="file"  
                             :width="345"

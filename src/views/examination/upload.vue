@@ -6,7 +6,7 @@
                 class="upload-demo"
                 drag
                 :limit="1"
-                action="http://120.25.25.90:8082/admin/exprotachievement"
+                action="http://music.eqask.com/admin/exprotachievement"
                 :data="{examination_id:examination_id}"
                 :multiple="false"
                 :before-upload="beforeUpload"

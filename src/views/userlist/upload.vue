@@ -6,7 +6,7 @@
                 class="upload-demo"
                 drag
                 :limit="1"
-                action="http://120.25.25.90:8082/admin/exprotVipUser"
+                action="http://music.eqask.com/admin/exprotVipUser"
                 :data="{}"
                 :multiple="false"
                 :before-upload="beforeUpload"
